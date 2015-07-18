@@ -190,7 +190,7 @@ section {
 
   li {
     background-color: $breadcrumb-background;
-    border-left: 0;
+    border-left: 1px solid #fff;
     border: $breadcrumb-border;
     color: $breadcrumb-color;
     display: inline-block;
