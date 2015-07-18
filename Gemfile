@@ -29,6 +29,12 @@ gem 'puma'
 
 gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'devise'
+gem 'active_record_union'
+gem 'time_will_tell'
+
+gem 'bourbon'
+gem 'neat'
+gem 'refills'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -40,6 +46,9 @@ group :development, :test do
   gem 'better_errors'
   gem 'spring'
   gem 'spring-commands-rspec'
+  gem 'factory_girl_rails'
+  gem 'faker'
+  gem 'shoulda-matchers', require: false
 end
 
 group :production do

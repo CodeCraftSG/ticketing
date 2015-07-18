@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150717100736) do
+ActiveRecord::Schema.define(version: 20150718024533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,8 +98,9 @@ ActiveRecord::Schema.define(version: 20150717100736) do
     t.boolean  "active"
     t.datetime "sale_starts_at"
     t.datetime "sale_ends_at"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
+    t.integer  "sequence",                                    default: 0, null: false
   end
 
   add_index "ticket_types", ["event_id"], name: "index_ticket_types_on_event_id", using: :btree

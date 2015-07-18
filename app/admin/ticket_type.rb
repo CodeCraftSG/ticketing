@@ -1,13 +1,22 @@
 ActiveAdmin.register TicketType do
   menu priority: 2
 
-  permit_params :event_id, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at
+  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at
+
+  config.sort_order = 'sequence_asc'
 
   index do
     selectable_column
     column :event
+    column :sequence
     column :name
-    column :price
+    column 'Price' do |event|
+      str = []
+      str << number_to_currency(event.price)
+      str << "<strike>#{number_to_currency(event.strikethrough_price)}</strike>".html_safe if event.strikethrough_price.present?
+
+      str.join('<br/>').html_safe
+    end
     column :quota
     column :hidden
     column :code
@@ -34,6 +43,7 @@ ActiveAdmin.register TicketType do
   form do |f|
     f.inputs 'Ticket Type' do
       f.input :event
+      f.input :sequence
       f.input :name
       f.input :description
       f.input :sale_starts_at
@@ -51,6 +61,7 @@ ActiveAdmin.register TicketType do
   show do
     attributes_table do
       row :event
+      row :sequence
       row :name
       row :description
       row :sale_starts_at

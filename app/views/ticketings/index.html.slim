@@ -1,0 +1,51 @@
+.hero
+  img(src="http://phpconf.asia/wp-content/uploads/2015/05/logo_web-500x175.png")
+  h1 PHPConf.Asia 2015 - Conference Ticketing
+  = simple_format(@event.description)
+
+.steps
+  ul.breadcrumb
+    li.active 1. Select Tickets
+    li 2. Review Order
+    li 3. Make Payment
+    li 4. Attendee Particulars
+
+.content
+  form(method="get" action="/")
+    table.tables
+      thead
+        tr
+          th Ticket Type
+          th(style="width:8em;") Price (SGD)
+          th(style="width:10em;text-align:center;") Quantity
+      tbody
+        - @ticket_types.each do |type|
+          tr class=(type.code.present? ? 'coupon' : '')
+            td
+              h3= type.name
+              p.description= type.description if type.description.present?
+              p.date= "Availability: #{date_range(type.sale_starts_at, type.sale_ends_at)}"
+            td
+              => number_to_currency(type.price)
+              - if type.strikethrough_price.present?
+                strike= number_to_currency(type.strikethrough_price)
+            td
+              - if type.available?
+                input (type='number' name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")
+              - else
+                = "Not available yet"
+
+    .coupon-code
+      input.code-field(type='text' name='code' placeholder='Coupon Code' value="#{params[:code]}")
+      button.apply-code-btn Apply
+
+    .actions
+      .order
+        input.buy-now(type='submit' value='Next: Review Order >>')
+
+.footer
+  hr
+  small
+    | PHPConf.Asia is organized by Code Craft Pte. Ltd. (Company Reg. No. 200706071C)
+    br
+    | Address: 10, ANSON ROAD, #12-11, Singapore(079903)
