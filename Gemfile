@@ -49,6 +49,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'shoulda-matchers', require: false
+  gem 'seed_dump'
 end
 
 group :production do

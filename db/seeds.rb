@@ -1,7 +1,10 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+Event.create!([
+  {name: "PHPConf.Asia", start_date: "2015-09-23", end_date: "2015-09-24", daily_start_time: "9:00am", daily_end_time: "5:00pm", description: "THE FIRST PAN-ASIAN PHP CONFERENCE!\r\nINTERNATIONAL & REGIONAL SPEAKERS • 2 DAYS • SINGLE TRACK\r\n22 – 23 SEPTEMBER, 2015\r\nSINGAPORE", active: true}
+])
+TicketType.create!([
+  {event_id: 1, name: "Partners Pricing", description: "For community partners only.", strikethrough_price: nil, price: "195.0", quota: 50, hidden: true, code: "phpsea2015", active: true, sale_starts_at: "2015-07-18 00:00:00", sale_ends_at: "2015-08-01 00:00:00", sequence: 0},
+  {event_id: 1, name: "Student Price", description: "Student pricing. Documentary proof is required after payment and submission of particulars. Do email a copy of your student pass to admin@phpconf.asia.", strikethrough_price: nil, price: "90.0", quota: 0, hidden: false, code: "", active: true, sale_starts_at: "2015-07-18 00:00:00", sale_ends_at: "2015-09-23 00:00:00", sequence: 98},
+  {event_id: 1, name: "Early Bird 1", description: "For the early birds. Full access to both days of the single conference. Lunch and tea-breaks are provided. Free t-shirt and other sponsor swags!", strikethrough_price: nil, price: "250.0", quota: 0, hidden: false, code: "", active: true, sale_starts_at: "2015-07-18 00:00:00", sale_ends_at: "2015-08-04 23:59:00", sequence: 1},
+  {event_id: 1, name: "Early Bird 2", description: "Full access to both days of the single conference. Lunch and tea-breaks are provided. Free t-shirt and other sponsor swags!", strikethrough_price: nil, price: "295.0", quota: 0, hidden: false, code: "", active: true, sale_starts_at: "2015-08-05 00:00:00", sale_ends_at: "2015-08-31 23:59:00", sequence: 2},
+  {event_id: 1, name: "Regular Ticket", description: "Full price ticket. Full access to both days of the single conference. Lunch and tea-breaks are provided. Free t-shirt and other sponsor swags!", strikethrough_price: nil, price: "350.0", quota: 0, hidden: false, code: "", active: true, sale_starts_at: "2015-09-01 00:00:00", sale_ends_at: "2015-09-23 00:00:00", sequence: 99}
+])
