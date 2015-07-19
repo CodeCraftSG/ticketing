@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150718024533) do
+ActiveRecord::Schema.define(version: 20150719165902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,16 +75,25 @@ ActiveRecord::Schema.define(version: 20150718024533) do
     t.integer  "ticket_type_id"
     t.integer  "quantity"
     t.integer  "total_amount_cents"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "purchase_order_id"
+  end
+
+  add_index "orders", ["purchase_order_id"], name: "index_orders_on_purchase_order_id", using: :btree
+  add_index "orders", ["ticket_type_id"], name: "index_orders_on_ticket_type_id", using: :btree
+
+  create_table "purchase_orders", force: :cascade do |t|
+    t.integer  "total_amount_cents"
+    t.datetime "purchased_at"
     t.string   "ip"
     t.string   "express_token"
     t.string   "express_payer_id"
     t.text     "notes"
-    t.datetime "purchased_at"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "orders", ["ticket_type_id"], name: "index_orders_on_ticket_type_id", using: :btree
 
   create_table "ticket_types", force: :cascade do |t|
     t.integer  "event_id"
@@ -116,6 +125,7 @@ ActiveRecord::Schema.define(version: 20150718024533) do
   add_index "tickets", ["attendee_id"], name: "index_tickets_on_attendee_id", using: :btree
   add_index "tickets", ["order_id"], name: "index_tickets_on_order_id", using: :btree
 
+  add_foreign_key "orders", "purchase_orders"
   add_foreign_key "orders", "ticket_types"
   add_foreign_key "ticket_types", "events"
   add_foreign_key "tickets", "attendees"
