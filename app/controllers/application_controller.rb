@@ -1,5 +1,42 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+  before_filter :fetch_event
+  before_filter :fetch_ticket_types
+  helper_method :coupon_code
+
+  CONF_ID = 1
+
+  protected
+
+  def fetch_event
+    @event = Event.find(event_id)
+  end
+
+  def fetch_ticket_types
+    @ticket_types = @event.ticket_types.tickets_available(code: coupon_code)
+  end
+
+  def build_purchase_order
+    @purchase_order = PurchaseOrder.new
+
+    @ticket_types.each do |ticket_type|
+      qty = orders_param[ticket_type.id.to_s].try(:to_i) || 0
+      if qty > 0
+        @purchase_order.orders << Order.new(ticket_type:ticket_type, quantity:qty).calculate_amount
+      end
+    end
+  end
+
+  def coupon_code
+    params[:code]
+  end
+
+  def event_id
+    params[:event_id] || CONF_ID
+  end
+
+  def orders_param
+    params.require(:orders)
+  end
 end
