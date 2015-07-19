@@ -50,6 +50,7 @@ group :development, :test do
   gem 'faker'
   gem 'shoulda-matchers', require: false
   gem 'seed_dump'
+  gem 'dotenv-rails'
 end
 
 group :production do
