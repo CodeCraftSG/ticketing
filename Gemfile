@@ -32,6 +32,7 @@ gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'devise'
 gem 'active_record_union'
 gem 'time_will_tell'
+gem 'activemerchant'
 
 gem 'bourbon'
 gem 'neat'
