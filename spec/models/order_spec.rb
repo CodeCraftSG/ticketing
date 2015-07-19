@@ -1,5 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#total_amount' do
+    it 'returns total_amount_cents in 2 decimal currency value' do
+      order = Order.new(total_amount_cents: 19999)
+
+      expect(order.total_amount).to eq 199.99
+    end
+  end
 end

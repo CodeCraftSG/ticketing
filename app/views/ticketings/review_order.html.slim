@@ -1,0 +1,54 @@
+.hero
+  = image_tag "phpconfasia_logo_web.png"
+  h1 PHPConf.Asia 2015 - Conference Ticketing
+  = simple_format(@event.description)
+
+.steps
+  ul.step-indicator
+    li.step.completed 1. Select Tickets
+    li.step.completed 2. Review Order
+    li.step 3. Make Payment
+    li.step 4. Attendee Particulars
+
+.content
+  form(method="post" action="/orders/express_checkout")
+    input(type='hidden' name="event_id" value=@event.id)
+    table.tables
+      thead
+        tr
+          th Ticket Type
+          th.price(style="width:8em;") Price (SGD)
+          th.price(style="width:6em;") Quantity
+          th.price(style="width:8em;") Sub-Total
+      tbody
+        - @purchase_orders.each do |order|
+          input(type='hidden' name="order[ticket_type_id]" value=order.ticket_type.id)
+          input(type='hidden' name="order[quantity]" value=order.quantity)
+          tr class=(order.ticket_type.code.present? ? 'coupon' : '')
+            td
+              h3= order.ticket_type.name
+              p.description= order.ticket_type.description if order.ticket_type.description.present?
+            td.price
+              => number_to_currency(order.ticket_type.price)
+              - if order.ticket_type.strikethrough_price.present?
+                strike= number_to_currency(order.ticket_type.strikethrough_price)
+            td.price=order.quantity
+            td.price=number_to_currency(order.total_amount)
+
+      tfoot
+        tr
+          th.right(colspan="3" style="text-align:right;") Total:
+          th.price= number_to_currency(@total_amount)
+    .actions-with-previous-step
+      .previous
+        a(href="javascript:history.back()")
+          '&laquo; Change Tickets
+      .next
+        input.buy-now(type='submit' name='next' value='Next: Make Payment >>')
+
+.footer
+  hr
+  small
+    | PHPConf.Asia is organized by Code Craft Pte. Ltd. (Company Reg. No. 200706071C)
+    br
+    | Address: 10, ANSON ROAD, #12-11, Singapore(079903)

@@ -27,16 +27,30 @@ section {
       }
       margin-bottom: 2em;
     }
+    .buy-now {
+      padding: 0.75em 2em;
+    }
     .actions {
       @include outer-container;
       .order {
         text-align: right;
-        .buy-now {
-          padding: 0.75em 2em;
-        }
         @include media($medium-screen) {
           @include shift(8);
           @include span-columns(4);
+        }
+      }
+    }
+    .actions-with-previous-step {
+      @include outer-container;
+      .previous {
+        @include media($medium-screen) {
+          @include span-columns(6);
+        }
+      }
+      .next {
+        text-align: right;
+        @include media($medium-screen) {
+          @include span-columns(6);
         }
       }
     }
