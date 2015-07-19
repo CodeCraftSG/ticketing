@@ -27,6 +27,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'slim-rails'
 gem 'puma'
 
+gem 'dotenv-rails', :require => 'dotenv/rails-now'
 gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'devise'
 gem 'active_record_union'
