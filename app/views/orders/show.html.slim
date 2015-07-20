@@ -10,11 +10,13 @@
     li.step 3. Make Payment
     li.step 4. Attendee Particulars
 
+- flash.each do |key, value|
+  div(class="flash-#{key}")=value
+
 .content
   form(method="post" action="/orders/express_checkout")
     input name="authenticity_token" type="hidden" value=form_authenticity_token
-    input type='hidden' name="event_id" value=@event.id
-    input type='hidden' name="code" value=coupon_code
+    input type='hidden' name="payment_token" value=@purchase_order.payment_token
     table.tables
       thead
         tr
@@ -40,11 +42,8 @@
         tr
           th.right(colspan="3" style="text-align:right;") Total:
           th.price= number_to_currency(@purchase_order.total_amount)
-    .actions-with-previous-step
-      .previous
-        a(href="javascript:history.back()")
-          '&laquo; Change Tickets
-      .next
+    .actions
+      .order
         input(type='image' src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png")
 
 .footer
@@ -53,3 +52,4 @@
     | PHPConf.Asia is organized by Code Craft Pte. Ltd. (Company Reg. No. 200706071C)
     br
     | Address: 10, ANSON ROAD, #12-11, Singapore(079903)
+

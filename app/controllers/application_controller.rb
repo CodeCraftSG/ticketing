@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def build_purchase_order
-    @purchase_order = PurchaseOrder.new
+    @purchase_order = PurchaseOrder.new(ip: request.remote_ip, status: :pending)
 
     @ticket_types.each do |ticket_type|
       qty = orders_param[ticket_type.id.to_s].try(:to_i) || 0
@@ -26,6 +26,8 @@ class ApplicationController < ActionController::Base
         @purchase_order.orders << Order.new(ticket_type:ticket_type, quantity:qty).calculate_amount
       end
     end
+
+    @purchase_order.calculate_amount
   end
 
   def coupon_code
