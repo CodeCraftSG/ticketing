@@ -78,7 +78,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.after_initialize do
-    ActiveMerchant::Billing::Base.mode = :production
+    ActiveMerchant::Billing::Base.mode = ENV["PAYPAL_API_MODE"].to_sym
     paypal_options = {
       login: ENV["PAYPAL_API_USERNAME"],
       password: ENV["PAYPAL_API_PASSWORD"],
