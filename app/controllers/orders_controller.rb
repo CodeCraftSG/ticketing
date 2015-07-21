@@ -35,7 +35,7 @@ class OrdersController < ApplicationController
   def success
     begin
       @purchase_order.purchase(params[:token])
-      redirect_to attendees_ticketing_path(@purchase_order.payment_token), flash: {notice: "Payment Received!"}
+      redirect_to attendees_order_path(@purchase_order.payment_token), flash: {notice: "Payment Received!"}
     rescue => e
       redirect_to order_path(@purchase_order.payment_token), flash: {error: e.message}
     end
@@ -49,7 +49,38 @@ class OrdersController < ApplicationController
   end
 
   def attendee_particulars
-    render text: params
+    unless @purchase_order.success?
+      Rails.logger.error "Exception: Unable to start update of attendee details for #{@purchase_order.payment_token} as payment was not successful."
+      return redirect_to ticketings_path, flash: {error: "Invalid purchase order. Please try again."}
+    end
+    if(@purchase_order.attendees.count > 0)
+      Rails.logger.error "Exception: Unable to start update of attendee details for #{@purchase_order.payment_token} as Attendee details already updated."
+      return redirect_to ticketings_path, flash: {error: "Attendee details already updated. Please email admin@phpconf.asia if you think this is en error."}
+    end
+  end
+
+  def update_attendee_particulars
+    begin
+      @purchase_order.orders.each do |order|
+        order.tickets.delete_all
+        (1..order.quantity).each do |i|
+          person = params[:order][order.id.to_s][i.to_s]
+          attendee = Attendee.where(first_name: person[:first_name],
+                                    last_name: person[:last_name],
+                                    email: person[:email]
+                                   ).first_or_create{ |a| a.size = person[:size] }
+          order.tickets << Ticket.new(attendee: attendee)
+        end
+        order.save!
+      end
+      redirect_to completed_order_path(@purchase_order.payment_token)
+    rescue => e
+      Rails.logger.error "Exception: Unable to update attendee details for #{@purchase_order.payment_token}. Error: #{e.message}"
+      redirect_to ticketings_path, flash: {error: e.message}
+    end
+  end
+
+  def completed
   end
 
   private

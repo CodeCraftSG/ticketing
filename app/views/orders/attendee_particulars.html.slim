@@ -1,0 +1,53 @@
+.steps
+  ul.step-indicator
+    li.step.completed 1. Select Tickets
+    li.step.completed 2. Review Order
+    li.step.completed 3. Make Payment
+    li.step 4. Attendee Particulars
+
+- flash.each do |key, value|
+  div(class="flash-#{key}")=value
+
+.content
+  form(method="post" action="/orders/#{@purchase_order.payment_token}/attendees")
+    input name="authenticity_token" type="hidden" value=form_authenticity_token
+    - @purchase_order.orders.each do |order|
+      - (1..order.quantity).each do |i|
+        fieldset.attendee
+          h3= "#{order.ticket_type.name} - Ticket #{i}"
+          .name
+            .col
+              label(for="order_#{order.id}_ticket_#{i}_first_name") First name
+              input(type="text" id="order_#{order.id}_ticket_#{i}_first_name" name="order[#{order.id}][#{i}][first_name]" value="")
+            .col
+              label(for="order_#{order.id}_ticket_#{i}_last_name") Last name
+              input(type="text" id="order_#{order.id}_ticket_#{i}_last_name" name="order[#{order.id}][#{i}][last_name]" value="")
+          .contact_others
+            .col
+              label(for="order_#{order.id}_ticket_#{i}_email") Email
+              input(type="text" id="order_#{order.id}_ticket_#{i}_email" name="order[#{order.id}][#{i}][email]" value="")
+            .col
+              label(for="order_#{order.id}_ticket_#{i}_size") T-shirt size
+              .button-group
+                label
+                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="XS")
+                  span.button-group-item XS
+                label
+                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="S")
+                  span.button-group-item S
+                label
+                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="M")
+                  span.button-group-item M
+                label
+                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="L")
+                  span.button-group-item L
+                label
+                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="XL")
+                  span.button-group-item XL
+                label
+                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="XXL")
+                  span.button-group-item XXL
+
+    .actions
+      .order
+        input.buy-now(type='submit' name='finalize' value='Complete Registration')
