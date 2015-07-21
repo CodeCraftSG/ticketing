@@ -1,14 +1,12 @@
-.hero
-  = image_tag "phpconfasia_logo_web.png"
-  h1 PHPConf.Asia 2015 - Conference Ticketing
-  = simple_format(@event.description)
-
 .steps
   ul.step-indicator
-    li.step.completed 1. Select Tickets
+    li.step 1. Select Tickets
     li.step 2. Review Order
     li.step 3. Make Payment
     li.step 4. Attendee Particulars
+
+- flash.each do |key, value|
+  div(class="flash-#{key}")=value
 
 .content
   form(method="get" action="/")
@@ -42,10 +40,3 @@
     .actions
       .order
         input.buy-now(type='submit' name='next' value='Next: Review Order >>')
-
-.footer
-  hr
-  small
-    | PHPConf.Asia is organized by Code Craft Pte. Ltd. (Company Reg. No. 200706071C)
-    br
-    | Address: 10, ANSON ROAD, #12-11, Singapore(079903)
