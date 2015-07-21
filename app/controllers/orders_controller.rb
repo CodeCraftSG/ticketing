@@ -35,7 +35,7 @@ class OrdersController < ApplicationController
   def success
     begin
       @purchase_order.purchase(params[:token])
-      redirect_to attendees_order_path(@purchase_order.payment_token), flash: {notice: "Payment Received!"}
+      redirect_to attendees_order_path(@purchase_order.payment_token), flash: {success: "Payment Received!"}
     rescue => e
       redirect_to order_path(@purchase_order.payment_token), flash: {error: e.message}
     end
@@ -53,9 +53,9 @@ class OrdersController < ApplicationController
       Rails.logger.error "Exception: Unable to start update of attendee details for #{@purchase_order.payment_token} as payment was not successful."
       return redirect_to ticketings_path, flash: {error: "Invalid purchase order. Please try again."}
     end
-    if(@purchase_order.attendees.count > 0)
+    if @purchase_order.attendees.count > 0
       Rails.logger.error "Exception: Unable to start update of attendee details for #{@purchase_order.payment_token} as Attendee details already updated."
-      return redirect_to ticketings_path, flash: {error: "Attendee details already updated. Please email admin@phpconf.asia if you think this is en error."}
+      return redirect_to ticketings_path, flash: {error: "Attendee details has already been added. Please email admin@phpconf.asia if you think this is in error."}
     end
   end
 

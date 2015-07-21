@@ -10,6 +10,8 @@
 
 .content
   form(method="post" action="/orders/#{@purchase_order.payment_token}/attendees")
+    .notice
+      h2 All right! Next step is to update the particulars of the attendee(s).
     input name="authenticity_token" type="hidden" value=form_authenticity_token
     - @purchase_order.orders.each do |order|
       - (1..order.quantity).each do |i|
@@ -17,14 +19,14 @@
           h3= "#{order.ticket_type.name} - Ticket #{i}"
           .name
             .col
-              label(for="order_#{order.id}_ticket_#{i}_first_name") First name
+              label(for="order_#{order.id}_ticket_#{i}_first_name") First name*
               input(type="text" id="order_#{order.id}_ticket_#{i}_first_name" name="order[#{order.id}][#{i}][first_name]" value="")
             .col
-              label(for="order_#{order.id}_ticket_#{i}_last_name") Last name
+              label(for="order_#{order.id}_ticket_#{i}_last_name") Last name*
               input(type="text" id="order_#{order.id}_ticket_#{i}_last_name" name="order[#{order.id}][#{i}][last_name]" value="")
           .contact_others
             .col
-              label(for="order_#{order.id}_ticket_#{i}_email") Email
+              label(for="order_#{order.id}_ticket_#{i}_email") Email*
               input(type="text" id="order_#{order.id}_ticket_#{i}_email" name="order[#{order.id}][#{i}][email]" value="")
             .col
               label(for="order_#{order.id}_ticket_#{i}_size") T-shirt size
@@ -47,7 +49,14 @@
                 label
                   input(type="radio" name="order[#{order.id}][#{i}][size]" value="XXL")
                   span.button-group-item XXL
+          .contact_others
+            .col
+              label(for="order_#{order.id}_ticket_#{i}_twitter") Twitter
+              input(type="text" id="order_#{order.id}_ticket_#{i}_twitter" name="order[#{order.id}][#{i}][twitter]" value="")
+            .col
+              label(for="order_#{order.id}_ticket_#{i}_id_number") ID Number (optional)
+              input(type="text" id="order_#{order.id}_ticket_#{i}_id_number" name="order[#{order.id}][#{i}][id_number]" value="")
 
     .actions
       .order
-        input.buy-now(type='submit' name='finalize' value='Complete Registration')
+        input.buy-now(type='submit' name='finalize' value='Save Attendee Particulars')

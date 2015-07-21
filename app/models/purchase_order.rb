@@ -58,7 +58,7 @@ class PurchaseOrder < ActiveRecord::Base
   private
 
   def set_payment_token
-    self.payment_token = SecureRandom.hex
+    self.payment_token = SecureRandom.uuid
   end
 
   def express_purchase_options
