@@ -1,4 +1,6 @@
 class PurchaseOrder < ActiveRecord::Base
+  has_paper_trail
+
   has_many :orders
   has_many :tickets, through: :orders
   has_many :attendees, through: :tickets
@@ -23,15 +25,15 @@ class PurchaseOrder < ActiveRecord::Base
     if orders.count == 1
       order = orders.first
       {
-        name: order.ticket_type.name,
-        description: order.ticket_type.description,
+        name: 'Event Tickets',
+        description: "#{order.ticket_type.name} (#{order.quantity} tickets)",
         quantity: order.quantity,
         amount: order.total_amount_cents
       }
     else
       {
         name: 'Event Tickets',
-        description: orders.map{|o| "#{o.ticket_type.name}(#{o.quantity})" }.join(', '),
+        description: orders.map{|o| "#{o.ticket_type.name} (#{o.quantity} tickets)" }.join(', '),
         quantity: 1,
         amount: total_amount_cents
       }
@@ -43,12 +45,20 @@ class PurchaseOrder < ActiveRecord::Base
 
     update(
       express_payer_id: details.payer_id,
-      express_token: token
+      express_token: token,
+      notes: details.note,
+      payer_address: details.address.to_json,
+      payer_email: details.email,
+      payer_salutation: details.info['PayerName']['Salutation'],
+      payer_first_name: details.info['PayerName']['FirstName'],
+      payer_last_name: details.info['PayerName']['LastName'],
+      payer_country: details.payer_country,
+      raw_payment_details: details.details.to_json
     )
 
     response = EXPRESS_GATEWAY.purchase(total_amount_cents, express_purchase_options)
     if response.success?
-      update(status: 'success', purchased_at: Time.now)
+      update(status: 'success', purchased_at: Time.now, invoice_no: auto_invoice_no )
     else
       Rails.logger.error "Exception: Payment Unsuccessful for #{payment_token} - #{response.message}"
       raise StandardError, response.message
@@ -68,5 +78,9 @@ class PurchaseOrder < ActiveRecord::Base
       payer_id: express_payer_id,
       currency: CURRENCY
     }
+  end
+
+  def auto_invoice_no
+    "INV-%s-%08d" % [created_at.strftime('%Y%m%d'), id]
   end
 end

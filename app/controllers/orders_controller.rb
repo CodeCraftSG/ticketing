@@ -67,7 +67,10 @@ class OrdersController < ApplicationController
           person = params[:order][order.id.to_s][i.to_s]
           attendee = Attendee.where(first_name: person[:first_name],
                                     last_name: person[:last_name],
-                                    email: person[:email]
+                                    email: person[:email],
+                                    twitter: person[:twitter],
+                                    github: person[:github],
+                                    size: person[:size]
                                    ).first_or_create{ |a| a.size = person[:size] }
           order.tickets << Ticket.new(attendee: attendee)
         end

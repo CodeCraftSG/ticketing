@@ -1,4 +1,6 @@
 class TicketType < ActiveRecord::Base
+  has_paper_trail
+
   belongs_to :event
   has_many :orders
   has_many :tickets, through: :orders

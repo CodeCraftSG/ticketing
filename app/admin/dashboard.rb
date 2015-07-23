@@ -29,5 +29,21 @@ ActiveAdmin.register_page "Dashboard" do
     #     end
     #   end
     # end
+
+    section "Recently updated content" do
+      table_for PaperTrail::Version.order('id desc').limit(20) do
+        column ("Item") { |v| link_to v.item, [:admin, v.item] }
+        column ("Type") { |v| v.item_type.underscore.humanize }
+        column ("Modified at") { |v| v.created_at.to_s :long }
+        column ("Admin") do |v|
+          if v.whodunnit.nil? || v.whodunnit == 'Public user'
+            'Public user'
+          else
+            link_to AdminUser.find(v.whodunnit).email, [:admin, AdminUser.find(v.whodunnit)]
+          end
+        end
+      end
+    end
   end # content
+
 end

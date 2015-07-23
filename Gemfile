@@ -33,6 +33,7 @@ gem 'devise'
 gem 'active_record_union'
 gem 'time_will_tell'
 gem 'activemerchant'
+gem 'paper_trail', '~> 4.0.0.rc'
 
 gem 'bourbon'
 gem 'neat'

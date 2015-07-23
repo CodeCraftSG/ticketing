@@ -1,4 +1,6 @@
 class Order < ActiveRecord::Base
+  has_paper_trail
+
   belongs_to :purchase_order
   belongs_to :ticket_type
   has_many :tickets

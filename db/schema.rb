@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721155911) do
+ActiveRecord::Schema.define(version: 20150723163429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20150721155911) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "size"
+    t.string   "github"
   end
 
   create_table "events", force: :cascade do |t|
@@ -95,6 +96,14 @@ ActiveRecord::Schema.define(version: 20150721155911) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "payment_token"
+    t.text     "payer_address"
+    t.string   "payer_email"
+    t.string   "payer_salutation"
+    t.string   "payer_first_name"
+    t.string   "payer_last_name"
+    t.string   "payer_country"
+    t.text     "raw_payment_details"
+    t.string   "invoice_no"
   end
 
   create_table "ticket_types", force: :cascade do |t|
@@ -126,6 +135,17 @@ ActiveRecord::Schema.define(version: 20150721155911) do
 
   add_index "tickets", ["attendee_id"], name: "index_tickets_on_attendee_id", using: :btree
   add_index "tickets", ["order_id"], name: "index_tickets_on_order_id", using: :btree
+
+  create_table "versions", force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
   add_foreign_key "orders", "purchase_orders"
   add_foreign_key "orders", "ticket_types"

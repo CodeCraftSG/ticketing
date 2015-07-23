@@ -41,4 +41,8 @@ class ApplicationController < ActionController::Base
   def orders_param
     params.require(:orders)
   end
+
+  def user_for_paper_trail
+    admin_user_signed_in? ? current_admin_user.try(:id) : 'Public user'
+  end
 end

@@ -3,7 +3,7 @@
     li.step.completed 1. Select Tickets
     li.step.completed 2. Review Order
     li.step.completed 3. Make Payment
-    li.step 4. Attendee Particulars
+    li.step.completed 4. Attendee Particulars
 
 - flash.each do |key, value|
   div(class="flash-#{key}")=value
@@ -11,7 +11,7 @@
 .content
   form(method="post" action="/orders/#{@purchase_order.payment_token}/attendees")
     .notice
-      h2 All right! Next step is to update the particulars of the attendee(s).
+      h2 Please provide us with your particulars.
     input name="authenticity_token" type="hidden" value=form_authenticity_token
     - @purchase_order.orders.each do |order|
       - (1..order.quantity).each do |i|
@@ -54,8 +54,8 @@
               label(for="order_#{order.id}_ticket_#{i}_twitter") Twitter
               input(type="text" id="order_#{order.id}_ticket_#{i}_twitter" name="order[#{order.id}][#{i}][twitter]" value="")
             .col
-              label(for="order_#{order.id}_ticket_#{i}_id_number") ID Number (optional)
-              input(type="text" id="order_#{order.id}_ticket_#{i}_id_number" name="order[#{order.id}][#{i}][id_number]" value="")
+              label(for="order_#{order.id}_ticket_#{i}_github") Github
+              input(type="text" id="order_#{order.id}_ticket_#{i}_github" name="order[#{order.id}][#{i}][github]" value="")
 
     .actions
       .order
