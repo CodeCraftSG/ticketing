@@ -57,6 +57,16 @@
               label(for="order_#{order.id}_ticket_#{i}_github") Github
               input(type="text" id="order_#{order.id}_ticket_#{i}_github" name="order[#{order.id}][#{i}][github]" value="")
 
+    h3 Payment Details
+    p A copy of the invoice has been sent to the payer's email.
+    dt
+      dt Transaction ID
+      dd= @purchase_order.transaction_id
+    dt
+      dt Payer ID
+      dd= @purchase_order.express_payer_id
+
+
     .actions
       .order
         input.buy-now(type='submit' name='finalize' value='Save Attendee Particulars')

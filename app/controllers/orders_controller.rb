@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
     end
 
     if @purchase_order.success?
-      return redirect_to attendees_ticketing_path(@purchase_order.payment_token), flash: {notice: "Payment Received!"}
+      return redirect_to attendees_order_path(@purchase_order.payment_token), flash: {notice: "Payment Received!"}
     end
 
     if @purchase_order.save

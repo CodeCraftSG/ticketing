@@ -38,6 +38,8 @@ gem 'paper_trail', '~> 4.0.0.rc'
 gem 'bourbon'
 gem 'neat'
 gem 'refills'
+gem 'premailer-rails'
+gem 'nokogiri'
 
 group :development, :test do
   gem 'rspec-rails'

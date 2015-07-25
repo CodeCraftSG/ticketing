@@ -29,7 +29,7 @@
                 strike= number_to_currency(type.strikethrough_price)
             td
               - if type.available?
-                input (type='number' name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")
+                input (id="ticket_type_#{type.id}_qty" type='number' step="1" name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")
               - else
                 = "Not available yet"
 

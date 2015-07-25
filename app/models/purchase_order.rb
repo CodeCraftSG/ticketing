@@ -1,6 +1,7 @@
 class PurchaseOrder < ActiveRecord::Base
   has_paper_trail
 
+  belongs_to :event
   has_many :orders
   has_many :tickets, through: :orders
   has_many :attendees, through: :tickets
@@ -25,14 +26,14 @@ class PurchaseOrder < ActiveRecord::Base
     if orders.count == 1
       order = orders.first
       {
-        name: 'Event Tickets',
+        name: "#{event.name} - Event Tickets",
         description: "#{order.ticket_type.name} (#{order.quantity} tickets)",
         quantity: order.quantity,
         amount: order.total_amount_cents
       }
     else
       {
-        name: 'Event Tickets',
+        name: "#{event.name} - Event Tickets",
         description: orders.map{|o| "#{o.ticket_type.name} (#{o.quantity} tickets)" }.join(', '),
         quantity: 1,
         amount: total_amount_cents
@@ -58,11 +59,17 @@ class PurchaseOrder < ActiveRecord::Base
 
     response = EXPRESS_GATEWAY.purchase(total_amount_cents, express_purchase_options)
     if response.success?
-      update(status: 'success', purchased_at: Time.now, invoice_no: auto_invoice_no )
+      new_details = EXPRESS_GATEWAY.details_for(token)
+      update(status: 'success', purchased_at: Time.now, invoice_no: auto_invoice_no, raw_payment_details: new_details.details.to_json)
+      OrdersMailer.payment_successful(self).deliver_later
     else
-      Rails.logger.error "Exception: Payment Unsuccessful for #{payment_token} - #{response.message}"
-      raise StandardError, response.message
+      Rails.logger.error "Exception: Payment Unsuccessful for #{payment_token} - #{response.error_code} #{response.message} #{response.params}"
+      raise StandardError, response.message unless response.params["error_codes"].include?('10415')
     end
+  end
+
+  def transaction_id
+    JSON.parse(raw_payment_details)['TransactionId']
   end
 
   private

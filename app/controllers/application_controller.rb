@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def build_purchase_order
-    @purchase_order = PurchaseOrder.new(ip: request.remote_ip, status: :pending)
+    @purchase_order = PurchaseOrder.new(ip: request.remote_ip, status: :pending, event: @event)
 
     @ticket_types.each do |ticket_type|
       qty = orders_param[ticket_type.id.to_s].try(:to_i) || 0
