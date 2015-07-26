@@ -42,6 +42,8 @@ gem 'premailer-rails'
 gem 'nokogiri'
 
 group :development, :test do
+  gem 'foreman'
+  gem 'mailcatcher'
   gem 'rspec-rails'
   gem 'pry'
   gem 'web-console', '~> 2.0'
