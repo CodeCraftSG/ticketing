@@ -10,10 +10,10 @@ ActiveAdmin.register TicketType do
     column :event
     column :sequence
     column :name
-    column 'Price' do |event|
+    column 'Price' do |e|
       str = []
-      str << number_to_currency(event.price)
-      str << "<strike>#{number_to_currency(event.strikethrough_price)}</strike>".html_safe if event.strikethrough_price.present?
+      str << number_to_currency(e.price)
+      str << "<strike>#{number_to_currency(e.strikethrough_price)}</strike>".html_safe if e.strikethrough_price.present?
 
       str.join('<br/>').html_safe
     end

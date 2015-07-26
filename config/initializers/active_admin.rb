@@ -230,4 +230,6 @@ ActiveAdmin.setup do |config|
   # You can enable or disable them for all resources here.
   #
   # config.filters = true
+
+  config.skip_before_filter :fetch_event, :fetch_ticket_types, :coupon_code
 end
