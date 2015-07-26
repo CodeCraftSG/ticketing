@@ -16,4 +16,10 @@ class Order < ActiveRecord::Base
 
     self
   end
+
+  def send_attendee_notifications
+    tickets.each do |ticket|
+      OrdersMailer.attendee_notification(purchase_order, ticket).deliver_later
+    end
+  end
 end

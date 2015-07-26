@@ -68,13 +68,16 @@ class OrdersController < ApplicationController
           attendee = Attendee.where(first_name: person[:first_name],
                                     last_name: person[:last_name],
                                     email: person[:email],
-                                    twitter: person[:twitter],
-                                    github: person[:github],
-                                    size: person[:size]
-                                   ).first_or_create{ |a| a.size = person[:size] }
+                                   ).first_or_create do |a|
+                                     a.size = person[:size]
+                                     a.twitter = person[:twitter].gsub(/[@]/,'')
+                                     a.github = person[:github]
+                                     a.size = person[:size]
+                                   end
           order.tickets << Ticket.new(attendee: attendee)
         end
         order.save!
+        order.send_attendee_notifications
       end
       redirect_to completed_order_path(@purchase_order.payment_token)
     rescue => e

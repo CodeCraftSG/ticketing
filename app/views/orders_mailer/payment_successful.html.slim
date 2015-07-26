@@ -13,7 +13,7 @@
     tbody
       - @purchase_order.orders.each do |order|
         input type='hidden' name="orders[#{order.ticket_type.id}]" value=order.quantity
-        tr class=(order.ticket_type.code.present? ? 'coupon' : '')
+        tr
           td
             h3= order.ticket_type.name
             p.description= order.ticket_type.description if order.ticket_type.description.present?

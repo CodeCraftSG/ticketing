@@ -1,0 +1,30 @@
+.content
+  h2
+    | Invoice:
+    strong<= @purchase_order.invoice_no
+
+  h3= "#{@ticket.order.ticket_type.name} - Event Ticket"
+
+  .cards
+    .card
+      .card-image
+        = image_tag attachments['krgh_facade_day.png'].url
+      .card-header
+        small> Name:
+        br /
+        = "#{@attendee.first_name}, #{@attendee.last_name}"
+
+      .card-copy
+        p
+          - if @attendee.size.present?
+            strong> T-shirt size:
+            => @attendee.size
+          - if @attendee.twitter.present?
+            | /
+            strong<> Twitter
+            => "@#{@attendee.twitter}"
+          - if @attendee.github.present?
+            | /
+            strong<> Github
+            => "#{@attendee.github}"
+
