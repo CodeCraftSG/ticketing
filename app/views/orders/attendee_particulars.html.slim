@@ -15,47 +15,34 @@
     input name="authenticity_token" type="hidden" value=form_authenticity_token
     - @purchase_order.orders.each do |order|
       - (1..order.quantity).each do |i|
+        - person = params.try(:[], :order).try(:[], order.id.to_s).try(:[], i.to_s) || {}
         fieldset.attendee
           h3= "#{order.ticket_type.name} - Ticket #{i}"
           .name
             .col
               label(for="order_#{order.id}_ticket_#{i}_first_name") First name*
-              input(type="text" id="order_#{order.id}_ticket_#{i}_first_name" name="order[#{order.id}][#{i}][first_name]" value="")
+              input(type="text" id="order_#{order.id}_ticket_#{i}_first_name" name="order[#{order.id}][#{i}][first_name]" value="#{person[:first_name]}")
             .col
               label(for="order_#{order.id}_ticket_#{i}_last_name") Last name*
-              input(type="text" id="order_#{order.id}_ticket_#{i}_last_name" name="order[#{order.id}][#{i}][last_name]" value="")
+              input(type="text" id="order_#{order.id}_ticket_#{i}_last_name" name="order[#{order.id}][#{i}][last_name]" value="#{person[:last_name]}")
           .contact_others
             .col
               label(for="order_#{order.id}_ticket_#{i}_email") Email*
-              input(type="text" id="order_#{order.id}_ticket_#{i}_email" name="order[#{order.id}][#{i}][email]" value="")
+              input(type="text" id="order_#{order.id}_ticket_#{i}_email" name="order[#{order.id}][#{i}][email]" value="#{person[:email]}")
             .col
               label(for="order_#{order.id}_ticket_#{i}_size") T-shirt size
               .button-group
-                label
-                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="XS")
-                  span.button-group-item XS
-                label
-                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="S")
-                  span.button-group-item S
-                label
-                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="M" checked="checked")
-                  span.button-group-item M
-                label
-                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="L")
-                  span.button-group-item L
-                label
-                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="XL")
-                  span.button-group-item XL
-                label
-                  input(type="radio" name="order[#{order.id}][#{i}][size]" value="XXL")
-                  span.button-group-item XXL
+                - ['XS', 'S', 'M', 'L', 'XL', 'XXL'].each do |size|
+                  label
+                    input(type="radio" name="order[#{order.id}][#{i}][size]" value="#{size}" checked=(size == person[:size])  )
+                    span.button-group-item= size
           .contact_others
             .col
               label(for="order_#{order.id}_ticket_#{i}_twitter") Twitter
-              input(type="text" id="order_#{order.id}_ticket_#{i}_twitter" name="order[#{order.id}][#{i}][twitter]" value="")
+              input(type="text" id="order_#{order.id}_ticket_#{i}_twitter" name="order[#{order.id}][#{i}][twitter]" value="#{person[:twitter]}")
             .col
               label(for="order_#{order.id}_ticket_#{i}_github") Github
-              input(type="text" id="order_#{order.id}_ticket_#{i}_github" name="order[#{order.id}][#{i}][github]" value="")
+              input(type="text" id="order_#{order.id}_ticket_#{i}_github" name="order[#{order.id}][#{i}][github]" value="#{person[:github]}")
 
     h3 Payment Details
     p A copy of the invoice has been sent to the payer's email.

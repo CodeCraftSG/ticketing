@@ -61,28 +61,32 @@ class OrdersController < ApplicationController
 
   def update_attendee_particulars
     begin
-      @purchase_order.orders.each do |order|
-        order.tickets.delete_all
-        (1..order.quantity).each do |i|
-          person = params[:order][order.id.to_s][i.to_s]
-          attendee = Attendee.where(first_name: person[:first_name],
-                                    last_name: person[:last_name],
-                                    email: person[:email],
-                                   ).first_or_create do |a|
-                                     a.size = person[:size]
-                                     a.twitter = person[:twitter].gsub(/[@]/,'')
-                                     a.github = person[:github]
-                                     a.size = person[:size]
-                                   end
-          order.tickets << Ticket.new(attendee: attendee)
+      Attendee.transaction do
+        @purchase_order.orders.each do |order|
+          order.tickets.delete_all
+          (1..order.quantity).each do |i|
+            person = params[:order][order.id.to_s][i.to_s]
+            attendee = Attendee.create!(
+                first_name: person[:first_name],
+                last_name: person[:last_name],
+                email: person[:email],
+                twitter: person[:twitter].gsub(/[@]/,''),
+                github: person[:github],
+                size: person[:size]
+            )
+            order.tickets << Ticket.new(attendee: attendee)
+          end
+          order.save!
         end
-        order.save!
+      end
+      @purchase_order.orders.each do |order|
         order.send_attendee_notifications
       end
       redirect_to completed_order_path(@purchase_order.payment_token)
     rescue => e
       Rails.logger.error "Exception: Unable to update attendee details for #{@purchase_order.payment_token}. Error: #{e.message}"
-      redirect_to ticketings_path, flash: {error: e.message}
+      flash[:error] = e.message
+      render :attendee_particulars
     end
   end
 

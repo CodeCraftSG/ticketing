@@ -40,6 +40,7 @@ gem 'neat'
 gem 'refills'
 gem 'premailer-rails'
 gem 'nokogiri'
+gem 'validates_email_format_of'
 
 group :development, :test do
   gem 'foreman'
