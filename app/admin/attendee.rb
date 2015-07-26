@@ -1,5 +1,42 @@
 ActiveAdmin.register Attendee do
   menu priority: 6
 
-  permit_params :first_name, :last_name, :email, :size, :twitter, :github
+  config.batch_actions = false
+
+  actions :all, except: [:edit, :update, :destroy]
+
+  filter :first_name
+  filter :last_name
+  filter :email
+  filter :twitter
+  filter :github
+
+  index do
+    column :first_name
+    column :last_name
+    column :email
+    column :size
+    column :twitter
+    column :github
+    actions
+  end
+
+  show do
+    attributes_table do
+      row :first_name
+      row :last_name
+      row :email
+      row :size
+      row :twitter
+      row :github
+    end
+
+    panel 'Events' do
+      table_for attendee.tickets do
+        column('Event') { |t| link_to t.order.ticket_type.event.name, admin_event_path(t.order.ticket_type.event) }
+        column('Ticket') { |t| t.order.ticket_type.name }
+        column('Order') { |t| t.order.purchase_order.invoice_no }
+      end
+    end
+  end
 end
