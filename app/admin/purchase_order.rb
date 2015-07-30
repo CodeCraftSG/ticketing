@@ -6,6 +6,7 @@ ActiveAdmin.register PurchaseOrder do
   actions :all, except: [:edit, :update, :destroy]
 
   filter :event
+  filter :payment_token
   filter :purchased_at
   filter :express_token
   filter :payer_first_name
@@ -16,6 +17,7 @@ ActiveAdmin.register PurchaseOrder do
 
   index do
     column :event
+    column :payment_token
     column :purchased_at
     column 'Payer' do |po|
       "#{po.payer_first_name} #{po.payer_last_name} <br/>(#{po.payer_email})".html_safe
@@ -27,9 +29,9 @@ ActiveAdmin.register PurchaseOrder do
     column 'Status' do |po|
       status_txt = case po.status
                      when 'success'
-                       'yes'
+                       'ok'
                      when 'pending'
-                       'no'
+                       'warning'
                      when 'cancelled'
                        'error'
                    end
@@ -41,12 +43,24 @@ ActiveAdmin.register PurchaseOrder do
   show do
     attributes_table do
       row :event
+      row :payment_token
       row :purchased_at
       row('Payer') do |po|
-        "#{po.payer_first_name} #{po.payer_last_name} <br/>(#{po.payer_email})".html_safe
+        "#{po.payer_first_name} #{po.payer_last_name} <br/>(<a href='mailto:#{po.payer_email}'>#{po.payer_email}</a>)".html_safe
       end
       row :express_token
       row('Amount'){ |t| number_to_currency(t.total_amount) }
+      row('Status') do |po|
+        status_txt = case po.status
+                       when 'success'
+                         'ok'
+                       when 'pending'
+                         'warning'
+                       when 'cancelled'
+                         'error'
+                     end
+        status_tag po.status, status_txt
+      end
     end
 
     panel "Order Items" do
