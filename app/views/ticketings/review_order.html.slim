@@ -26,6 +26,8 @@
           tr class=(order.ticket_type.code.present? ? 'coupon' : '')
             td
               h3= order.ticket_type.name
+              - if order.ticket_type.complimentary?
+                span.badge-notice Complimentary
               p.description= order.ticket_type.description if order.ticket_type.description.present?
             td.price
               => number_to_currency(order.ticket_type.price)
@@ -43,4 +45,7 @@
         a(href="javascript:history.back()")
           '&laquo; Change Tickets
       .next
-        input(type='image' src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png")
+        - if @purchase_order.total_amount_cents > 0
+          input(type='image' src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png")
+        - else
+          input.buy-now(type='submit' name='next' value='Next: Attendee Particulars >>')

@@ -70,6 +70,12 @@ class PurchaseOrder < ActiveRecord::Base
 
   def transaction_id
     JSON.parse(raw_payment_details)['TransactionId']
+  rescue
+    nil
+  end
+
+  def auto_invoice_no
+    "INV-%s-%08d" % [created_at.strftime('%Y%m%d'), id]
   end
 
   private
@@ -85,9 +91,5 @@ class PurchaseOrder < ActiveRecord::Base
       payer_id: express_payer_id,
       currency: CURRENCY
     }
-  end
-
-  def auto_invoice_no
-    "INV-%s-%08d" % [created_at.strftime('%Y%m%d'), id]
   end
 end

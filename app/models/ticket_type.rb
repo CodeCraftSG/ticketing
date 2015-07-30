@@ -15,10 +15,15 @@ class TicketType < ActiveRecord::Base
     available = active.visible
 
     if code
-      available = available.
-                    union(
-                      self.active.with_code(code)
-                    )
+      coupon_code_ticket = active.with_code(code).first
+      if coupon_code_ticket.present? && coupon_code_ticket.complimentary?
+        available = with_code(code)
+      else
+        available = available.
+                      union(
+                        self.active.with_code(code)
+                      )
+      end
     end
 
     available.order("sequence ASC")

@@ -46,12 +46,14 @@
 
     h3 Payment Details
     p A copy of the invoice has been sent to the payer's email.
-    dt
-      dt Transaction ID
-      dd= @purchase_order.transaction_id
-    dt
-      dt Payer ID
-      dd= @purchase_order.express_payer_id
+    - if @purchase_order.transaction_id.present?
+      dt
+        dt Transaction ID
+        dd= @purchase_order.transaction_id
+    - if @purchase_order.express_payer_id.present?
+      dt
+        dt Payer ID
+        dd= @purchase_order.express_payer_id
 
 
     .actions

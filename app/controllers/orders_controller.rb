@@ -13,16 +13,22 @@ class OrdersController < ApplicationController
     end
 
     if @purchase_order.save
-      response = EXPRESS_GATEWAY.setup_purchase(@purchase_order.total_amount_cents,
-        ip: request.remote_ip,
-        return_url: success_order_url(@purchase_order.payment_token),
-        cancel_return_url: cancel_order_url(@purchase_order.payment_token),
-        currency: PurchaseOrder::CURRENCY,
-        allow_guest_checkout: true,
-        items: [@purchase_order.build_payment_params]
-      )
 
-      redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
+      if @purchase_order.total_amount_cents > 0
+        response = EXPRESS_GATEWAY.setup_purchase(@purchase_order.total_amount_cents,
+          ip: request.remote_ip,
+          return_url: success_order_url(@purchase_order.payment_token),
+          cancel_return_url: cancel_order_url(@purchase_order.payment_token),
+          currency: PurchaseOrder::CURRENCY,
+          allow_guest_checkout: true,
+          items: [@purchase_order.build_payment_params]
+        )
+        redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
+      else
+        @purchase_order.update(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no)
+        OrdersMailer.payment_successful(@purchase_order).deliver_later
+        redirect_to attendees_order_path(@purchase_order.payment_token), flash: {success: "Order Received!"}
+      end
     else
       Rails.logger.error "Exception: Unable to save payment for #{params}"
       redirect_to request.referer, flash: {error: 'Unable to initiate payment.'}

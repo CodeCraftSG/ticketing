@@ -1,7 +1,7 @@
 ActiveAdmin.register TicketType do
   menu priority: 2
 
-  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at
+  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary
 
   config.sort_order = 'sequence_asc'
 
@@ -17,8 +17,11 @@ ActiveAdmin.register TicketType do
 
       str.join('<br/>').html_safe
     end
-    column :quota
+    column('Quota') do |e|
+      "#{e.attendees.count}/#{e.quota}"
+    end
     column :hidden
+    column :complimentary
     column :code
     column :sale_starts_at
     column :sale_ends_at
@@ -32,6 +35,7 @@ ActiveAdmin.register TicketType do
   filter :sale_starts_at
   filter :sale_ends_at
   filter :hidden
+  filter :complimentary
   filter :active
 
   controller do
@@ -52,6 +56,7 @@ ActiveAdmin.register TicketType do
       f.input :strikethrough_price, label: 'Strike Through Price'
       f.input :quota
       f.input :hidden
+      f.input :complimentary
       f.input :code
       f.input :active
     end
@@ -70,8 +75,11 @@ ActiveAdmin.register TicketType do
       row 'Strike Through Price' do |t|
         "<strike>#{number_to_currency(t.strikethrough_price)}</strike>".html_safe
       end if ticket_type.strikethrough_price
-      row :quota
+      row('Quota') do |t|
+        "#{t.attendees.count}/#{t.quota}"
+      end
       row('Hidden'){ |t| status_tag(t.hidden ? 'yes' : 'no') }
+      row('Complimentary'){ |t| status_tag(t.hidden ? 'yes' : 'no') }
       row :code if ticket_type.code.present?
       row('Active'){ |t| status_tag(t.active ? 'yes' : 'no') }
     end

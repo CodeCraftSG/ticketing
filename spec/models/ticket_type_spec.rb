@@ -78,9 +78,9 @@ RSpec.describe TicketType, type: :model do
   end
 
   describe '.tickets_available' do
-    let!(:active) { FactoryGirl.create :ticket_type, active:true, hidden:false, sequence:1 }
-    let!(:hidden_and_coded) { FactoryGirl.create :ticket_type, active:true, hidden:true, code:discount_code, sequence:0 }
-    let!(:inactive) { FactoryGirl.create :ticket_type, active: false, hidden:false, sequence: 2 }
+    let!(:active) { FactoryGirl.create :ticket_type, name: 'Active type', active:true, hidden:false, sequence:1 }
+    let!(:hidden_and_coded) { FactoryGirl.create :ticket_type, name: 'Hidden and coded', active:true, hidden:true, code:discount_code, sequence:0 }
+    let!(:inactive) { FactoryGirl.create :ticket_type, name: 'Inactive', active: false, hidden:false, sequence: 2 }
 
     let(:discount_code) { nil }
     let(:do_action) { TicketType.tickets_available(code: discount_code) }
@@ -108,6 +108,16 @@ RSpec.describe TicketType, type: :model do
             expect(do_action).to contain_exactly active
           end
         end
+      end
+    end
+
+    context 'complimentary ticket' do
+      let(:sponsor_code) { 'sponsor' }
+      let!(:complimentary) { FactoryGirl.create :ticket_type, name: 'Sponsor ticket', code:sponsor_code, active: true, hidden: true, complimentary: true, sequence: 2 }
+      let(:do_action) { TicketType.tickets_available(code: sponsor_code) }
+
+      it 'returns only complimentary ticket' do
+        expect(do_action).to contain_exactly complimentary
       end
     end
   end

@@ -16,6 +16,8 @@
         tr
           td
             h3= order.ticket_type.name
+            - if order.ticket_type.complimentary?
+              span.badge-notice Complimentary
             p.description= order.ticket_type.description if order.ticket_type.description.present?
           td.price
             => number_to_currency(order.ticket_type.price)
@@ -30,10 +32,12 @@
         th.price= number_to_currency(@purchase_order.total_amount)
 
   h3 Payment Details
-  dt
-    dt Transaction ID
-    dd= @purchase_order.transaction_id
-  dt
-    dt Payer ID
-    dd= @purchase_order.express_payer_id
+  - if @purchase_order.transaction_id.present?
+    dt
+      dt Transaction ID
+      dd= @purchase_order.transaction_id
+  - if @purchase_order.express_payer_id.present?
+    dt
+      dt Payer ID
+      dd= @purchase_order.express_payer_id
 

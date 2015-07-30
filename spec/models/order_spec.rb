@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
+  describe 'validations' do
+    it { should validate_numericality_of(:quantity).is_greater_than(0) }
+  end
+
   describe '#total_amount' do
     it 'returns total_amount_cents in 2 decimal currency value' do
       order = Order.new(total_amount_cents: 19999)

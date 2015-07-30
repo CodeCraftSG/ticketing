@@ -1,6 +1,8 @@
 class Order < ActiveRecord::Base
   has_paper_trail
 
+  validates_numericality_of :quantity, greater_than: 0
+
   belongs_to :purchase_order
   belongs_to :ticket_type
   has_many :tickets, dependent: :destroy
