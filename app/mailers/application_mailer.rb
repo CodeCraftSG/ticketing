@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "admin@phpconf.asia"
+  default from: "\"PHPConf.Asia\" <admin@phpconf.asia>"
   layout 'mailer'
 
   before_action :insert_logo
