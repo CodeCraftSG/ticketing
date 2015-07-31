@@ -30,16 +30,16 @@
                 span.badge-notice Complimentary
               p.description= order.ticket_type.description if order.ticket_type.description.present?
             td.price
-              => number_to_currency(order.ticket_type.price, unit: 'SGD$')
+              => price_with_currency(order.ticket_type.price)
               - if order.ticket_type.strikethrough_price.present?
-                strike= number_to_currency(order.ticket_type.strikethrough_price, unit: 'SGD$')
+                strike= price_with_currency(order.ticket_type.strikethrough_price)
             td.price=order.quantity
-            td.price=number_to_currency(order.total_amount, unit: 'SGD$')
+            td.price=price_with_currency(order.total_amount)
 
       tfoot
         tr
           th.right(colspan="3" style="text-align:right;") Total:
-          th.price= number_to_currency(@purchase_order.total_amount, unit: 'SGD$')
+          th.price= price_with_currency(@purchase_order.total_amount)
     .actions-with-previous-step
       .previous
         a(href="javascript:history.back()")
