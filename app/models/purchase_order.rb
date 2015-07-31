@@ -28,7 +28,7 @@ class PurchaseOrder < ActiveRecord::Base
       {
         name: "#{event.name} - Event Tickets",
         description: "#{order.ticket_type.name} (#{order.quantity} tickets)",
-        quantity: order.quantity,
+        quantity: 1,
         amount: order.total_amount_cents
       }
     else
