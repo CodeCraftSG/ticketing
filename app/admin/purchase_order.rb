@@ -14,13 +14,19 @@ ActiveAdmin.register PurchaseOrder do
   filter :payer_email
   filter :status, as: :check_boxes, collection: PurchaseOrder.statuses
 
-
   index do
     column :event
-    column :payment_token
+    column('Payment Token / Invoice') do |po|
+      if po.invoice_no.present?
+        po.invoice_no
+      else
+        po.payment_token
+      end
+    end
+    column :created_at
     column :purchased_at
     column 'Payer' do |po|
-      "#{po.payer_first_name} #{po.payer_last_name} <br/>(#{po.payer_email})".html_safe
+      "#{po.payer_first_name} #{po.payer_last_name} <br/>(#{po.payer_email})".html_safe if po.payer_email.present?
     end
     column :express_token
     column 'Amount' do |po|
@@ -44,6 +50,7 @@ ActiveAdmin.register PurchaseOrder do
     attributes_table do
       row :event
       row :payment_token
+      row :invoice_no
       row :purchased_at
       row('Payer') do |po|
         "#{po.payer_first_name} #{po.payer_last_name} <br/>(<a href='mailto:#{po.payer_email}'>#{po.payer_email}</a>)".html_safe
@@ -80,6 +87,17 @@ ActiveAdmin.register PurchaseOrder do
         column('Size') { |t| t.attendee.size }
         column('Twitter') { |t| t.attendee.twitter }
         column('Github') { |t| t.attendee.github }
+        column('Document') do |t|
+          if t.order.ticket_type.needs_document?
+            if t.document.present?
+              status_tag('Uploaded', 'ok')
+            else
+              status_tag('Unavailable', 'error')
+            end
+          else
+            '-'
+          end
+        end
       end
     end
   end
