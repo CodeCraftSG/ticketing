@@ -9,7 +9,7 @@
   div(class="flash-#{key}")=value
 
 .content
-  form(method="post" action="/orders/#{@purchase_order.payment_token}/attendees")
+  form(method="post" action="/orders/#{@purchase_order.payment_token}/attendees" enctype="multipart/form-data")
     .notice
       h2 Please provide us with your particulars.
     input name="authenticity_token" type="hidden" value=form_authenticity_token
@@ -43,6 +43,11 @@
             .col
               label(for="order_#{order.id}_ticket_#{i}_github") Github
               input(type="text" id="order_#{order.id}_ticket_#{i}_github" name="order[#{order.id}][#{i}][github]" value="#{person[:github]}")
+          - if order.ticket_type.needs_document?
+            .contact_others
+              .col
+                label(for="order_#{order.id}_ticket_#{i}_document") Documentary proof needed
+                input(type="file" id="order_#{order.id}_ticket_#{i}_document" name="order[#{order.id}][#{i}][document]")
 
     h3 Payment Details
     p A copy of the invoice has been sent to the payer's email.

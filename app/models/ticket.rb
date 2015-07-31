@@ -3,4 +3,6 @@ class Ticket < ActiveRecord::Base
 
   belongs_to :order
   belongs_to :attendee
+
+  mount_uploader :document, DocumentUploader
 end

@@ -73,6 +73,14 @@ GEM
     builder (3.2.2)
     byebug (4.0.5)
       columnize (= 0.9.0)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
+    carrierwave-dropbox (1.2.1)
+      carrierwave (~> 0.9)
+      dropbox-sdk (~> 1.6)
     coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -98,6 +106,8 @@ GEM
     dotenv-rails (2.0.2)
       dotenv (= 2.0.2)
       railties (~> 4.0)
+    dropbox-sdk (1.6.5)
+      json
     erubis (2.7.0)
     eventmachine (1.0.5)
     execjs (2.5.2)
@@ -325,6 +335,8 @@ DEPENDENCIES
   better_errors
   bourbon
   byebug
+  carrierwave
+  carrierwave-dropbox
   coffee-rails (~> 4.1.0)
   devise
   dotenv-rails

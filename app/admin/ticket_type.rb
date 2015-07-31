@@ -1,7 +1,7 @@
 ActiveAdmin.register TicketType do
   menu priority: 2
 
-  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary
+  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary, :needs_document
 
   config.sort_order = 'sequence_asc'
 
@@ -57,6 +57,7 @@ ActiveAdmin.register TicketType do
       f.input :quota
       f.input :hidden
       f.input :complimentary
+      f.input :needs_document
       f.input :code
       f.input :active
     end
@@ -78,8 +79,9 @@ ActiveAdmin.register TicketType do
       row('Quota') do |t|
         "#{t.attendees.count}/#{t.quota}"
       end
-      row('Hidden'){ |t| status_tag(t.hidden ? 'yes' : 'no') }
-      row('Complimentary'){ |t| status_tag(t.hidden ? 'yes' : 'no') }
+      row('Hidden'){ |t| status_tag(t.hidden? ? 'yes' : 'no') }
+      row('Complimentary'){ |t| status_tag(t.complimentary? ? 'yes' : 'no') }
+      row('Needs Document?'){ |t| status_tag(t.needs_document? ? 'yes' : 'no') }
       row :code if ticket_type.code.present?
       row('Active'){ |t| status_tag(t.active ? 'yes' : 'no') }
     end

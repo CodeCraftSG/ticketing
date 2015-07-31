@@ -41,6 +41,8 @@ gem 'refills'
 gem 'premailer-rails'
 gem 'nokogiri'
 gem 'validates_email_format_of'
+gem 'carrierwave'
+gem 'carrierwave-dropbox'
 
 group :development, :test do
   gem 'foreman'

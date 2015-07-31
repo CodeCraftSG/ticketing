@@ -80,7 +80,9 @@ class OrdersController < ApplicationController
                 github: person[:github],
                 size: person[:size]
             )
-            order.tickets << Ticket.new(attendee: attendee)
+            ticket = Ticket.new(attendee: attendee)
+            ticket.document = person[:document] if order.ticket_type.needs_document? && person[:document].present?
+            order.tickets << ticket
           end
           order.save!
         end
