@@ -12,7 +12,7 @@ ActiveAdmin.register PurchaseOrder do
   filter :payer_first_name
   filter :payer_last_name
   filter :payer_email
-  filter :status
+  filter :status, as: :check_boxes, collection: PurchaseOrder.statuses
 
 
   index do
