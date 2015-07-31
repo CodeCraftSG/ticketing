@@ -24,7 +24,7 @@ ActiveAdmin.register PurchaseOrder do
     end
     column :express_token
     column 'Amount' do |po|
-      number_to_currency po.total_amount
+      number_to_currency po.total_amount, unit: 'SGD$'
     end
     column 'Status' do |po|
       status_txt = case po.status
@@ -49,7 +49,7 @@ ActiveAdmin.register PurchaseOrder do
         "#{po.payer_first_name} #{po.payer_last_name} <br/>(<a href='mailto:#{po.payer_email}'>#{po.payer_email}</a>)".html_safe
       end
       row :express_token
-      row('Amount'){ |t| number_to_currency(t.total_amount) }
+      row('Amount'){ |t| number_to_currency(t.total_amount, unit: 'SGD$') }
       row('Status') do |po|
         status_txt = case po.status
                        when 'success'
@@ -67,7 +67,7 @@ ActiveAdmin.register PurchaseOrder do
       table_for purchase_order.orders do
         column('Type') { |o| o.ticket_type.name }
         column('Quantity') { |o| o.quantity }
-        column('Total') { |o| number_to_currency o.total_amount }
+        column('Total') { |o| number_to_currency o.total_amount, unit: 'SGD$' }
       end
     end
 

@@ -12,8 +12,8 @@ ActiveAdmin.register TicketType do
     column :name
     column 'Price' do |e|
       str = []
-      str << number_to_currency(e.price)
-      str << "<strike>#{number_to_currency(e.strikethrough_price)}</strike>".html_safe if e.strikethrough_price.present?
+      str << number_to_currency(e.price, unit: 'SGD$')
+      str << "<strike>#{number_to_currency(e.strikethrough_price, unit: 'SGD$')}</strike>".html_safe if e.strikethrough_price.present?
 
       str.join('<br/>').html_safe
     end
@@ -71,9 +71,9 @@ ActiveAdmin.register TicketType do
       row :description
       row :sale_starts_at
       row :sale_ends_at
-      row('Price'){ |t| number_to_currency(t.price) }
+      row('Price'){ |t| number_to_currency(t.price, unit: 'SGD$') }
       row 'Strike Through Price' do |t|
-        "<strike>#{number_to_currency(t.strikethrough_price)}</strike>".html_safe
+        "<strike>#{number_to_currency(t.strikethrough_price, unit: 'SGD$')}</strike>".html_safe
       end if ticket_type.strikethrough_price
       row('Quota') do |t|
         "#{t.attendees.count}/#{t.quota}"

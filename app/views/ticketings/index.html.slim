@@ -26,9 +26,9 @@
               p.description= type.description if type.description.present?
               p.date= "Availability: #{date_range(type.sale_starts_at, type.sale_ends_at)}"
             td.price
-              => number_to_currency(type.price)
+              => number_to_currency(type.price, unit: 'SGD$')
               - if type.strikethrough_price.present?
-                strike= number_to_currency(type.strikethrough_price)
+                strike= number_to_currency(type.strikethrough_price, unit: 'SGD$')
             td
               - if type.available?
                 input (id="ticket_type_#{type.id}_qty" type='number' step="1" name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")
