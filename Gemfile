@@ -43,6 +43,7 @@ gem 'nokogiri'
 gem 'validates_email_format_of'
 gem 'carrierwave'
 gem 'carrierwave-dropbox'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'foreman'
