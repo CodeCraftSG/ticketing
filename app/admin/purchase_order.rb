@@ -26,11 +26,18 @@ ActiveAdmin.register PurchaseOrder do
     column :created_at
     column :purchased_at
     column 'Payer' do |po|
-      "#{po.payer_first_name} #{po.payer_last_name} <br/>(#{po.payer_email})".html_safe if po.payer_email.present?
+      payer_info = []
+      payer_info << po.transaction_id || ''
+      payer_info << po.express_token || ''
+      payer_info << "#{po.payer_first_name} #{po.payer_last_name}<br/>(#{po.payer_email})" if po.payer_email.present?
+
+      payer_info.join('<br/>').html_safe
     end
-    column :express_token
     column 'Amount' do |po|
       number_to_currency po.total_amount, unit: 'SGD$'
+    end
+    column 'Attendees' do |po|
+      po.attendees.count
     end
     column 'Status' do |po|
       status_txt = case po.status
@@ -49,14 +56,24 @@ ActiveAdmin.register PurchaseOrder do
   show do
     attributes_table do
       row :event
-      row :payment_token
       row :invoice_no
+      row :created_at
       row :purchased_at
+      row('Transaction ID') do |po|
+        po.transaction_id
+      end
+      row :payment_token
       row('Payer') do |po|
         "#{po.payer_first_name} #{po.payer_last_name} <br/>(<a href='mailto:#{po.payer_email}'>#{po.payer_email}</a>)".html_safe
       end
       row :express_token
       row('Amount'){ |t| number_to_currency(t.total_amount, unit: 'SGD$') }
+      row('Address') do |po|
+        if po.payer_address.present?
+          address = JSON.parse(po.payer_address)
+          address.map{|v| "<b>#{v.first.capitalize}</b>: #{v.last}" if v.last.present? }.compact.join('<br/>').html_safe
+        end
+      end
       row('Status') do |po|
         status_txt = case po.status
                        when 'success'
