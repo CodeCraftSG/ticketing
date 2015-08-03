@@ -3,33 +3,7 @@
     | Invoice:
     strong<= @purchase_order.invoice_no
 
-  table.tables
-    thead
-      tr
-        th Ticket Type
-        th.price(style="width:8em;") Price (SGD)
-        th.price(style="width:6em;") Quantity
-        th.price(style="width:8em;") Sub-Total
-    tbody
-      - @purchase_order.orders.each do |order|
-        input type='hidden' name="orders[#{order.ticket_type.id}]" value=order.quantity
-        tr
-          td
-            h3= order.ticket_type.name
-            - if order.ticket_type.complimentary?
-              span.badge-notice Complimentary
-            p.description= order.ticket_type.description if order.ticket_type.description.present?
-          td.price
-            => number_to_currency(order.ticket_type.price, unit: order.ticket_type.currency_unit + '$')
-            - if order.ticket_type.strikethrough_price.present?
-              strike= number_to_currency(order.ticket_type.strikethrough_price, unit: order.ticket_type.currency_unit + '$')
-          td.price=order.quantity
-          td.price=number_to_currency(order.total_amount, unit: order.ticket_type.currency_unit + '$')
-
-    tfoot
-      tr
-        th.right(colspan="3" style="text-align:right;") Total:
-        th.price= number_to_currency(@purchase_order.total_amount, unit: @purchase_order.orders.first.ticket_type.currency_unit + '$')
+  = render 'shared/order_table'
 
   h3 Payment Details
   - if @purchase_order.transaction_id.present?

@@ -12,31 +12,9 @@
   form(method="post" action="/orders/express_checkout")
     input name="authenticity_token" type="hidden" value=form_authenticity_token
     input type='hidden' name="payment_token" value=@purchase_order.payment_token
-    table.tables
-      thead
-        tr
-          th Ticket Type
-          th.price(style="width:8em;") Price (SGD)
-          th.price(style="width:6em;") Quantity
-          th.price(style="width:8em;") Sub-Total
-      tbody
-        - @purchase_order.orders.each do |order|
-          input type='hidden' name="orders[#{order.ticket_type.id}]" value=order.quantity
-          tr class=(order.ticket_type.code.present? ? 'coupon' : '')
-            td
-              h3= order.ticket_type.name
-              p.description= order.ticket_type.description if order.ticket_type.description.present?
-            td.price
-              => price_with_currency(order.ticket_type.price, order.ticket_type.currency_unit + '$')
-              - if order.ticket_type.strikethrough_price.present?
-                strike= price_with_currency(order.ticket_type.strikethrough_price, order.ticket_type.currency_unit + '$')
-            td.price=order.quantity
-            td.price=price_with_currency(order.total_amount, order.ticket_type.currency_unit + '$')
 
-      tfoot
-        tr
-          th.right(colspan="3" style="text-align:right;") Total:
-          th.price= price_with_currency(@purchase_order.total_amount, @purchase_order.orders.first.ticket_type.currency_unit + '$')
+    = render 'shared/order_table'
+
     .actions
       .order
         input(type='image' src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png")

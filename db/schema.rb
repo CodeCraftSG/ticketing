@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803151658) do
+ActiveRecord::Schema.define(version: 20150803163750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(version: 20150803151658) do
     t.boolean  "complimentary"
     t.boolean  "needs_document"
     t.string   "currency_unit",                               default: "SGD"
+    t.boolean  "standalone",                                  default: false
   end
 
   add_index "ticket_types", ["event_id"], name: "index_ticket_types_on_event_id", using: :btree

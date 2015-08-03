@@ -26,4 +26,24 @@ RSpec.describe PurchaseOrder, type: :model do
       expect(purchase_order.total_amount_cents).to eq 80200
     end
   end
+
+  describe '#currency_unit' do
+    context 'no orders' do
+      it 'returns default currency' do
+        purchase_order = PurchaseOrder.new
+
+        expect(purchase_order.currency_unit).to eq 'SGD'
+      end
+    end
+
+    context 'has orders' do
+      it 'returns currency of first order' do
+        purchase_order = PurchaseOrder.new
+        ticket_type = TicketType.new(currency_unit: 'BTC')
+        purchase_order.orders << Order.new(ticket_type: ticket_type)
+
+        expect(purchase_order.currency_unit).to eq 'BTC'
+      end
+    end
+  end
 end

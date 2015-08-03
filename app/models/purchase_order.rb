@@ -78,6 +78,12 @@ class PurchaseOrder < ActiveRecord::Base
     "INV-%s-%08d" % [created_at.strftime('%Y%m%d'), id]
   end
 
+  def currency_unit
+    return orders.first.ticket_type.currency_unit if orders.present?
+
+    'SGD'
+  end
+
   private
 
   def set_payment_token

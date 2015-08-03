@@ -1,7 +1,7 @@
 ActiveAdmin.register TicketType do
   menu priority: 2
 
-  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary, :needs_document, :currency_unit
+  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary, :standalone, :needs_document, :currency_unit
 
   config.sort_order = 'sequence_asc'
 
@@ -22,6 +22,7 @@ ActiveAdmin.register TicketType do
     end
     column :hidden
     column :complimentary
+    column :standalone
     column :code
     column :sale_starts_at
     column :sale_ends_at
@@ -36,6 +37,7 @@ ActiveAdmin.register TicketType do
   filter :sale_ends_at
   filter :hidden
   filter :complimentary
+  filter :standalone
   filter :active
 
   controller do
@@ -58,6 +60,7 @@ ActiveAdmin.register TicketType do
       f.input :quota
       f.input :hidden
       f.input :complimentary
+      f.input :standalone
       f.input :needs_document
       f.input :code
       f.input :active
@@ -82,6 +85,7 @@ ActiveAdmin.register TicketType do
       end
       row('Hidden'){ |t| status_tag(t.hidden? ? 'yes' : 'no') }
       row('Complimentary'){ |t| status_tag(t.complimentary? ? 'yes' : 'no') }
+      row('Standalone'){ |t| status_tag(t.standalone? ? 'yes' : 'no') }
       row('Needs Document?'){ |t| status_tag(t.needs_document? ? 'yes' : 'no') }
       row :code if ticket_type.code.present?
       row('Active'){ |t| status_tag(t.active ? 'yes' : 'no') }

@@ -3,5 +3,6 @@ FactoryGirl.define do
     active true
     hidden false
     complimentary false
+    standalone false
   end
 end

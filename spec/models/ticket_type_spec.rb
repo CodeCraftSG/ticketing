@@ -111,13 +111,13 @@ RSpec.describe TicketType, type: :model do
       end
     end
 
-    context 'complimentary ticket' do
+    context 'standalone ticket' do
       let(:sponsor_code) { 'sponsor' }
-      let!(:complimentary) { FactoryGirl.create :ticket_type, name: 'Sponsor ticket', code:sponsor_code, active: true, hidden: true, complimentary: true, sequence: 2 }
+      let!(:standalone) { FactoryGirl.create :ticket_type, name: 'Sponsor ticket', code:sponsor_code, active: true, hidden: true, standalone: true, sequence: 2 }
       let(:do_action) { TicketType.tickets_available(code: sponsor_code) }
 
-      it 'returns only complimentary ticket' do
-        expect(do_action).to contain_exactly complimentary
+      it 'returns only standalone ticket' do
+        expect(do_action).to contain_exactly standalone
       end
     end
   end
