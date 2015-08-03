@@ -44,6 +44,7 @@ gem 'validates_email_format_of'
 gem 'carrierwave'
 gem 'carrierwave-dropbox'
 gem 'newrelic_rpm'
+gem 'blockchain'
 
 group :development, :test do
   gem 'foreman'

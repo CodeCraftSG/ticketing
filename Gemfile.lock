@@ -67,6 +67,7 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    blockchain (1.0.2)
     bourbon (4.2.3)
       sass (~> 3.4)
       thor
@@ -334,6 +335,7 @@ DEPENDENCIES
   activemerchant
   bcrypt (~> 3.1.7)
   better_errors
+  blockchain
   bourbon
   byebug
   carrierwave
