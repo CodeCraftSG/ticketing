@@ -27,16 +27,16 @@
               h3= order.ticket_type.name
               p.description= order.ticket_type.description if order.ticket_type.description.present?
             td.price
-              => price_with_currency(order.ticket_type.price)
+              => price_with_currency(order.ticket_type.price, order.ticket_type.currency_unit + '$')
               - if order.ticket_type.strikethrough_price.present?
-                strike= price_with_currency(order.ticket_type.strikethrough_price)
+                strike= price_with_currency(order.ticket_type.strikethrough_price, order.ticket_type.currency_unit + '$')
             td.price=order.quantity
-            td.price=price_with_currency(order.total_amount)
+            td.price=price_with_currency(order.total_amount, order.ticket_type.currency_unit + '$')
 
       tfoot
         tr
           th.right(colspan="3" style="text-align:right;") Total:
-          th.price= price_with_currency(@purchase_order.total_amount)
+          th.price= price_with_currency(@purchase_order.total_amount, @purchase_order.orders.first.ticket_type.currency_unit + '$')
     .actions
       .order
         input(type='image' src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png")

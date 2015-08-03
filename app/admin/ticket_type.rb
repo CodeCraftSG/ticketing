@@ -1,7 +1,7 @@
 ActiveAdmin.register TicketType do
   menu priority: 2
 
-  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary, :needs_document
+  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary, :needs_document, :currency_unit
 
   config.sort_order = 'sequence_asc'
 
@@ -12,8 +12,8 @@ ActiveAdmin.register TicketType do
     column :name
     column 'Price' do |e|
       str = []
-      str << number_to_currency(e.price, unit: 'SGD$')
-      str << "<strike>#{number_to_currency(e.strikethrough_price, unit: 'SGD$')}</strike>".html_safe if e.strikethrough_price.present?
+      str << number_to_currency(e.price, unit: e.currency_unit)
+      str << "<strike>#{number_to_currency(e.strikethrough_price, unit: e.currency_unit)}</strike>".html_safe if e.strikethrough_price.present?
 
       str.join('<br/>').html_safe
     end
@@ -52,6 +52,7 @@ ActiveAdmin.register TicketType do
       f.input :description
       f.input :sale_starts_at
       f.input :sale_ends_at
+      f.input :currency_unit
       f.input :price
       f.input :strikethrough_price, label: 'Strike Through Price'
       f.input :quota
@@ -72,9 +73,9 @@ ActiveAdmin.register TicketType do
       row :description
       row :sale_starts_at
       row :sale_ends_at
-      row('Price'){ |t| number_to_currency(t.price, unit: 'SGD$') }
+      row('Price'){ |t| number_to_currency(t.price, unit: t.currency_unit) }
       row 'Strike Through Price' do |t|
-        "<strike>#{number_to_currency(t.strikethrough_price, unit: 'SGD$')}</strike>".html_safe
+        "<strike>#{number_to_currency(t.strikethrough_price, unit: t.currency_unit)}</strike>".html_safe
       end if ticket_type.strikethrough_price
       row('Quota') do |t|
         "#{t.attendees.count}/#{t.quota}"

@@ -14,7 +14,7 @@
       thead
         tr
           th Ticket Type
-          th.price(style="width:8em;") Price (SGD)
+          th.price(style="width:8em;") Price
           th(style="width:10em;text-align:center;") Quantity
       tbody
         - @ticket_types.each do |type|
@@ -26,9 +26,9 @@
               p.description= type.description if type.description.present?
               p.date= "Availability: #{date_range(type.sale_starts_at, type.sale_ends_at)}"
             td.price
-              => price_with_currency(type.price)
+              => price_with_currency(type.price, type.currency_unit + '$')
               - if type.strikethrough_price.present?
-                strike= price_with_currency(type.strikethrough_price)
+                strike= price_with_currency(type.strikethrough_price, type.currency_unit + '$')
             td
               - if type.available?
                 input (id="ticket_type_#{type.id}_qty" type='number' step="1" name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")
