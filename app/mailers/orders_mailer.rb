@@ -1,9 +1,17 @@
 class OrdersMailer < ApplicationMailer
+  def payment_started(purchase_order)
+    @purchase_order = purchase_order
+    @event = purchase_order.event
+    @input_address = @purchase_order.transaction_details_hash[:input_address]
+
+    mail(to: @purchase_order.payer_email, bcc: 'orders@phpconf.asia', subject: "[#{@event.name}] Ticket Purchase Order - #{@purchase_order.created_at.strftime('%e-%b-%Y')}")
+  end
+
   def payment_successful(purchase_order)
     @purchase_order = purchase_order
     @event = purchase_order.event
 
-    mail(to: @purchase_order.payer_email, bcc: 'orders@phpconf.asia', subject: "[#{@event.name}] Ticket Purchase Order - #{@purchase_order.invoice_no} - #{@purchase_order.purchased_at.strftime('%e-%b-%Y')}")
+    mail(to: @purchase_order.payer_email, bcc: 'orders@phpconf.asia', subject: "[#{@event.name}] Ticket Payment Received - #{@purchase_order.invoice_no} - #{@purchase_order.purchased_at.strftime('%e-%b-%Y')}")
   end
 
   def attendee_notification(purchase_order, ticket)

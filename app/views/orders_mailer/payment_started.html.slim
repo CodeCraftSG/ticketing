@@ -1,0 +1,12 @@
+.content
+  h2 Purchase Order
+
+  = render 'shared/order_table'
+
+  h3 Please make payment to the following Bitcoin Wallet Address:
+
+  fieldset.notice
+    strong(class="bitcoin-address" data-bc-amount=@purchase_order.total_amount data-bc-label=@purchase_order.name data-bc-message=@purchase_order.description data-bc-address=@input_address)= @input_address
+    h3
+      | Amount Payable:
+      =< number_to_currency(@purchase_order.total_amount, unit: @purchase_order.currency_unit + '฿')
