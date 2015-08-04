@@ -4,9 +4,7 @@ class BitcoinsController < ApplicationController
   def payment
     begin
       return_address = complete_bitcoin_url(@purchase_order.payment_token, secret:@purchase_order.express_token)
-      # @input_address = BlockchainService.receive(return_address)
-
-      @input_address = '13ASiVPm7A296QsukZXH8MQSX2aLWoBiSp'
+      @input_address = BlockchainService.receive(return_address)
     rescue => e
       redirect_to order_path(@purchase_order.payment_token), flash: {error: e.message}
     end
