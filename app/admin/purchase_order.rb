@@ -27,14 +27,14 @@ ActiveAdmin.register PurchaseOrder do
     column :purchased_at
     column 'Payer' do |po|
       payer_info = []
-      payer_info << po.transaction_id || ''
-      payer_info << po.express_token || ''
+      payer_info << po.transaction_id if po.transaction_id
+      payer_info << po.express_token if po.express_token
       payer_info << "#{po.payer_first_name} #{po.payer_last_name}<br/>(#{po.payer_email})" if po.payer_email.present?
 
       payer_info.join('<br/>').html_safe
     end
     column 'Amount' do |po|
-      number_to_currency po.total_amount, unit: 'SGD$'
+      number_to_currency po.total_amount, unit: po.currency_unit + '$'
     end
     column 'Attendees' do |po|
       po.attendees.count
@@ -67,7 +67,7 @@ ActiveAdmin.register PurchaseOrder do
         "#{po.payer_first_name} #{po.payer_last_name} <br/>(<a href='mailto:#{po.payer_email}'>#{po.payer_email}</a>)".html_safe
       end
       row :express_token
-      row('Amount'){ |t| number_to_currency(t.total_amount, unit: 'SGD$') }
+      row('Amount'){ |po| number_to_currency(po.total_amount, unit: po.currency_unit + '$') }
       row('Address') do |po|
         if po.payer_address.present?
           address = JSON.parse(po.payer_address)
@@ -91,7 +91,7 @@ ActiveAdmin.register PurchaseOrder do
       table_for purchase_order.orders do
         column('Type') { |o| o.ticket_type.name }
         column('Quantity') { |o| o.quantity }
-        column('Total') { |o| number_to_currency o.total_amount, unit: 'SGD$' }
+        column('Total') { |o| number_to_currency o.total_amount, unit: o.ticket_type.currency_unit + '$' }
       end
     end
 

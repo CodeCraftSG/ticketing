@@ -22,23 +22,29 @@ class PurchaseOrder < ActiveRecord::Base
     self
   end
 
-  def build_payment_params
+  def name
+    "#{event.name} - Event Tickets"
+  end
+
+  def description
+    return '' if orders.count == 0
     if orders.count == 1
       order = orders.first
-      {
-        name: "#{event.name} - Event Tickets",
-        description: "#{order.ticket_type.name} (#{order.quantity} tickets)",
-        quantity: 1,
-        amount: order.total_amount_cents
-      }
+      "#{order.ticket_type.name} (#{order.quantity} tickets)"
     else
-      {
-        name: "#{event.name} - Event Tickets",
-        description: orders.map{|o| "#{o.ticket_type.name} (#{o.quantity} tickets)" }.join(', '),
-        quantity: 1,
-        amount: total_amount_cents
-      }
+      orders.map{|o| "#{o.ticket_type.name} (#{o.quantity} tickets)" }.join(', ')
     end
+  end
+
+  def build_payment_params
+    calculate_amount unless total_amount_cents
+
+    {
+      name: name,
+      description: description,
+      quantity: 1,
+      amount: total_amount_cents
+    }
   end
 
   def purchase(token)

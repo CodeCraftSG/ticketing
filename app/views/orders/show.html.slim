@@ -9,12 +9,15 @@
   div(class="flash-#{key}")=value
 
 .content
-  form(method="post" action="/orders/express_checkout")
+  form(method="post" action="/orders/checkout")
     input name="authenticity_token" type="hidden" value=form_authenticity_token
     input type='hidden' name="payment_token" value=@purchase_order.payment_token
 
     = render 'shared/order_table'
 
+    = render 'shared/payer_info' if @purchase_order.currency_unit == 'BTC'
+
     .actions
       .order
-        input(type='image' src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png")
+        - pay_image = @purchase_order.currency_unit == 'SGD' ? 'https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png' : image_url('bitcoin-buy-it-now-button')
+        input(type='image' src=pay_image)

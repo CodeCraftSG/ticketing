@@ -1,0 +1,64 @@
+.steps
+  ul.step-indicator
+    li.step.completed 1. Select Tickets
+    li.step.completed 2. Review Order
+    li.step.completed 3. Make Payment
+    li.step 4. Attendee Particulars
+
+- flash.each do |key, value|
+  div(class="flash-#{key}")=value
+
+.content
+  form(method="post" action="/bitcoins/#{@purchase_order.payment_token}" enctype="multipart/form-data")
+    input name="authenticity_token" type="hidden" value=form_authenticity_token
+
+    h2 Payment Details
+
+    = render 'shared/order_table'
+
+    h3 Please make payment to the following Bitcoin Wallet Address:
+
+    fieldset.notice
+      strong(class="bitcoin-address" data-bc-amount=@purchase_order.total_amount data-bc-label=@purchase_order.name data-bc-message=@purchase_order.description data-bc-address=@input_address)= @input_address
+      h3
+        | Amount Payable:
+        =< number_to_currency(@purchase_order.total_amount, unit: @purchase_order.currency_unit + '$')
+
+  p A copy of the payment details has been sent to the payer's email.
+
+#bitcoin-address-template.bitcoin-address-container style=("display: none")
+  div
+    span.bitcoin-address
+  a.bitcoin-address-action.bitcoin-address-action-send href="#"
+    i.fa.fa-btc
+    | Pay from wallet
+  a.bitcoin-address-action.bitcoin-address-action-copy href="#"
+    i.fa.fa-copy
+    | Copy
+  a.bitcoin-address-action.bitcoin-address-action-qr href="#"
+    i.fa.fa-qrcode
+    | QR code
+  .bitcoin-action-hint.bitcoin-action-hint-send
+    | Sending payment to the address from locally installed Bitcoin wallet app.
+  .bitcoin-action-hint.bitcoin-action-hint-copy
+    | Press CTRL + C or ⌘ + C to copy the Bitcoin address.
+  .bitcoin-action-hint.bitcoin-action-hint-qr
+    p
+      | Scan the QR code with your mobile Bitcoin app to
+      | make the payment:
+    .bitcoin-address-qr-container
+
+javascript:
+  $(document).ready(function() {
+    bitcoinaddress.init({
+      selector: ".bitcoin-address",
+      template: "bitcoin-address-template",
+      qr : {
+        width: 128,
+        height: 128,
+        colorDark : "#000000",
+        colorLight : "#ffffff"
+      },
+      qrRawAddress: false
+    });
+  });

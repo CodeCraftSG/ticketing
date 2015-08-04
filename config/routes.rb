@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'orders/express_checkout'
-
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   root 'ticketings#index'
@@ -11,7 +9,7 @@ Rails.application.routes.draw do
   end
   resources :orders, only: [:show] do
     collection do
-      post '/express_checkout', to: 'orders#express_checkout'
+      post '/checkout', to: 'orders#checkout'
     end
 
     member do
@@ -20,6 +18,12 @@ Rails.application.routes.draw do
       get '/attendees', to: 'orders#attendee_particulars'
       post '/attendees', to: 'orders#update_attendee_particulars'
       get '/completed', to: 'orders#completed'
+    end
+  end
+  resources :bitcoins, only: [] do
+    member do
+      get '/payment', to: 'bitcoins#payment'
+      get '/complete', to: 'bitcoins#complete_payment'
     end
   end
 end

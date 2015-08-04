@@ -1,0 +1,14 @@
+fieldset.attendee
+  h3 Payer Info
+  .name
+    .col
+      label(for="purchase_order_first_name") First name*
+      input(type="text" id="purchase_order_first_name" name="purchase_order[payer_first_name]" value="#{@purchase_order[:payer_first_name]}")
+    .col
+      label(for="purchase_order_last_name") Last name*
+      input(type="text" id="purchase_order_last_name" name="purchase_order[payer_last_name]" value="#{@purchase_order[:payer_last_name]}")
+
+  .contact_others
+    .col
+      label(for="purchase_order_payer_email") Email*
+      input(type="text" id="purchase_order_payer_email" name="purchase_order[payer_email]" value="#{@purchase_order[:payer_email]}")

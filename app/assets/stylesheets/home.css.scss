@@ -535,3 +535,43 @@ $success-color: #e6efc2 !default;
   @include badge($success-color);
 }
 
+.bitcoin-address-action{
+  display: inline-block;
+  margin: 10px;
+  .fa {
+    margin-right: 3px;
+  }
+}
+
+.bitcoin-action-hint {
+  display: none;
+}
+
+.bitcoin-address-container .bitcoin-address {
+  border-bottom: 1px dashed gray;
+  cursor: pointer;
+}
+
+.bitcoin-address-qr-container > img,
+.bitcoin-address-qr-container > canvas {
+  margin: 0 auto;
+}
+
+.clickable-price {
+  cursor: pointer;
+  border-bottom: 1px #888 dashed;
+}
+
+#bitcoin-icon {
+  font-size: 128px;
+  color: #F7931A;
+  .fa-circle {
+    text-shadow: 0 3px 3px rgba(32, 32, 32, 0.3);
+  }
+  .fa-btc {
+    text-shadow: 0 -1px 1px black;
+    -moz-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg);
+  }
+}

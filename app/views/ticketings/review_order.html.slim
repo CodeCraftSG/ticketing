@@ -9,12 +9,14 @@
   div(class="flash-#{key}")=value
 
 .content
-  form(method="post" action="/orders/express_checkout")
+  form(method="post" action="/orders/checkout")
     input name="authenticity_token" type="hidden" value=form_authenticity_token
     input type='hidden' name="event_id" value=@event.id
     input type='hidden' name="code" value=coupon_code
 
     = render 'shared/order_table'
+
+    = render 'shared/payer_info' if @purchase_order.currency_unit == 'BTC'
 
     .actions-with-previous-step
       .previous
@@ -22,6 +24,7 @@
           '&laquo; Change Tickets
       .next
         - if @purchase_order.total_amount_cents > 0
-          input(type='image' src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png")
+          - pay_image = @purchase_order.currency_unit == 'SGD' ? 'https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png' : image_url('bitcoin-buy-it-now-button')
+          input(type='image' src=pay_image)
         - else
           input.buy-now(type='submit' name='next' value='Next: Attendee Particulars >>')

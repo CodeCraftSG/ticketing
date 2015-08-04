@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
-  before_filter :set_purchase_order, except: [:express_checkout]
+  before_filter :set_purchase_order, except: [:checkout]
 
-  def express_checkout
+  def checkout
     if params[:payment_token]
       @purchase_order = PurchaseOrder.find_by(payment_token: params[:payment_token])
     else
@@ -15,15 +15,20 @@ class OrdersController < ApplicationController
     if @purchase_order.save
 
       if @purchase_order.total_amount_cents > 0
-        response = EXPRESS_GATEWAY.setup_purchase(@purchase_order.total_amount_cents,
-          ip: request.remote_ip,
-          return_url: success_order_url(@purchase_order.payment_token),
-          cancel_return_url: cancel_order_url(@purchase_order.payment_token),
-          currency: PurchaseOrder::CURRENCY,
-          allow_guest_checkout: true,
-          items: [@purchase_order.build_payment_params]
-        )
-        redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
+        if @purchase_order.currency_unit == 'SGD'
+          response = EXPRESS_GATEWAY.setup_purchase(@purchase_order.total_amount_cents,
+                                                    ip: request.remote_ip,
+                                                    return_url: success_order_url(@purchase_order.payment_token),
+                                                    cancel_return_url: cancel_order_url(@purchase_order.payment_token),
+                                                    currency: @purchase_order.currency_unit,
+                                                    allow_guest_checkout: true,
+                                                    items: [@purchase_order.build_payment_params]
+          )
+          redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
+        elsif @purchase_order.currency_unit == 'BTC'
+          @purchase_order.update(payer_info_params.merge(express_token: SecureRandom.hex(5)))
+          redirect_to payment_bitcoin_path(@purchase_order.payment_token)
+        end
       else
         @purchase_order.update(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no)
         OrdersMailer.payment_successful(@purchase_order).deliver_later
@@ -102,6 +107,10 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def payer_info_params
+    params.require(:purchase_order).permit(:payer_first_name, :payer_last_name, :payer_email)
+  end
 
   def set_purchase_order
     @purchase_order = PurchaseOrder.find_by(payment_token: params[:id])

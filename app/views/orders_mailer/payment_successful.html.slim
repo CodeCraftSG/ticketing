@@ -5,6 +5,12 @@
 
   = render 'shared/order_table'
 
+  h3 Update Attendee Particulars
+  p
+    | Please visit this URL to complete the attendee particulars:
+    br
+    strong= link_to(attendees_order_url(@purchase_order.payment_token), attendees_order_url(@purchase_order.payment_token))
+
   h3 Payment Details
   - if @purchase_order.transaction_id.present?
     dt
