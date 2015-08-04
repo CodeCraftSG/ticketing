@@ -5,7 +5,7 @@ class BlockchainService
       resp.input_address
     rescue => e
       Rails.logger.error "Exception: Unable to generate receiving address: #{e.message}"
-      raise e
+      Rails.env.development? ? ENV["BITCOIN_WALLET"] : raise(e)
     end
   end
 end

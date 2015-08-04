@@ -12,10 +12,15 @@ class OrdersController < ApplicationController
       return redirect_to attendees_order_path(@purchase_order.payment_token), flash: {notice: "Payment Received!"}
     end
 
-    if @purchase_order.save
+    begin
+      PurchaseOrder.transaction do
+        @purchase_order.save!
 
-      if @purchase_order.total_amount_cents > 0
-        if @purchase_order.currency_unit == 'SGD'
+        if @purchase_order.total_amount_cents == 0
+          @purchase_order.update(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no)
+          OrdersMailer.payment_successful(@purchase_order).deliver_later
+          return redirect_to attendees_order_path(@purchase_order.payment_token), flash: {success: "Order Received!"}
+        elsif @purchase_order.currency_unit == 'SGD'
           response = EXPRESS_GATEWAY.setup_purchase(@purchase_order.total_amount_cents,
                                                     ip: request.remote_ip,
                                                     return_url: success_order_url(@purchase_order.payment_token),
@@ -24,18 +29,26 @@ class OrdersController < ApplicationController
                                                     allow_guest_checkout: true,
                                                     items: [@purchase_order.build_payment_params]
           )
-          redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
+          return redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
         elsif @purchase_order.currency_unit == 'BTC'
-          @purchase_order.update(payer_info_params.merge(express_token: SecureRandom.hex(5)))
-          redirect_to payment_bitcoin_path(@purchase_order.payment_token)
+          begin
+            express_token = SecureRandom.hex(5)
+            return_address = complete_bitcoin_url(@purchase_order.payment_token, secret:express_token)
+            input_address = BlockchainService.receive(return_address)
+            raw_payment_details = {
+                input_address: input_address,
+                return_address: return_address
+            }.to_json
+            @purchase_order.update(payer_info_params.merge(express_token:express_token, raw_payment_details:raw_payment_details))
+            OrdersMailer.payment_started(@purchase_order).deliver_later
+            return redirect_to payment_bitcoin_path(@purchase_order.payment_token)
+          rescue => e
+            return redirect_to order_path(@purchase_order.payment_token), flash: {error: e.message}
+          end
         end
-      else
-        @purchase_order.update(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no)
-        OrdersMailer.payment_successful(@purchase_order).deliver_later
-        redirect_to attendees_order_path(@purchase_order.payment_token), flash: {success: "Order Received!"}
       end
-    else
-      Rails.logger.error "Exception: Unable to save payment for #{params}"
+    rescue => e
+      Rails.logger.error "Exception: Unable to save payment (#{e.message}) for #{params}"
       redirect_to request.referer, flash: {error: 'Unable to initiate payment.'}
     end
   end

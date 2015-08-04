@@ -22,7 +22,7 @@
       strong(class="bitcoin-address" data-bc-amount=@purchase_order.total_amount data-bc-label=@purchase_order.name data-bc-message=@purchase_order.description data-bc-address=@input_address)= @input_address
       h3
         | Amount Payable:
-        =< number_to_currency(@purchase_order.total_amount, unit: @purchase_order.currency_unit + '$')
+        =< number_to_currency(@purchase_order.total_amount, unit: @purchase_order.currency_unit + '฿')
 
   p A copy of the payment details has been sent to the payer's email.
 

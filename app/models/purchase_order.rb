@@ -90,6 +90,12 @@ class PurchaseOrder < ActiveRecord::Base
     'SGD'
   end
 
+  def transaction_details_hash
+    return {} unless raw_payment_details.present?
+
+    JSON.parse(raw_payment_details, symbolize_names: true) rescue {}
+  end
+
   private
 
   def set_payment_token
