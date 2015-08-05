@@ -54,6 +54,9 @@ section {
         @include media($medium-screen) {
           @include span-columns(8);
         }
+        &.payment-methods{
+          margin-top: 1em;
+        }
       }
       .next {
         text-align: right;
@@ -71,6 +74,12 @@ section {
         .col {
           @include span-columns(6)
         }
+      }
+    }
+    .fine-print{
+      margin-top: 1.5em;
+      li{
+        font-size: 0.8em;
       }
     }
     .footer {
@@ -311,7 +320,6 @@ $textColorCompleted: #fff;
 
 .coupon-code {
   @include media($medium-screen) {
-    @include shift(8);
     @include span-columns(4);
   }
   ///////////////////////////////////////////////////////////////////////////////////

@@ -37,9 +37,15 @@
               - else
                 | Not available yet
 
-    .coupon-code
-      input.code-field(type='text' name='code' placeholder='Coupon Code' value="#{params[:code]}")
-      button.apply-code-btn Apply
+    .actions-with-previous-step
+      .previous.payment-methods
+        a href="https://www.paypal.com/sg/webapps/mpp/paypal-popup" onclick="javascript:window.open('https://www.paypal.com/sg/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" title=("How PayPal Works")
+          img alt=("Buy now with PayPal") src="https://www.paypalobjects.com/webstatic/mktg/logo/PP_AcceptanceMarkTray-NoDiscover_243x40.png" /
+        a< href="/?code=#{ENV["DEFAULT_BITCOIN_COUPON"]}" title="Click here to buy tickets with Bitcoin"
+          = image_tag 'bitcoin-accepted-here.png'
+      .next.coupon-code
+        input.code-field(type='text' name='code' placeholder='Coupon Code' value="#{params[:code]}")
+        button.apply-code-btn Apply
 
     .actions
       .order
