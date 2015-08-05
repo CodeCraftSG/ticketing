@@ -29,11 +29,13 @@
               => price_with_currency(type.price, type.currency_unit + '$')
               - if type.strikethrough_price.present?
                 strike= price_with_currency(type.strikethrough_price, type.currency_unit + '$')
-            td
+            td(style="text-align:center;")
               - if type.available?
                 input (id="ticket_type_#{type.id}_qty" type='number' step="1" name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")
+              - elsif type.sale_ends_at < DateTime.now
+                | Unavailable
               - else
-                = "Not available yet"
+                | Not available yet
 
     .coupon-code
       input.code-field(type='text' name='code' placeholder='Coupon Code' value="#{params[:code]}")
@@ -42,3 +44,11 @@
     .actions
       .order
         input.buy-now(type='submit' name='next' value='Next: Review Order >>')
+
+  .fine-print
+    h3 Refund Policy
+    ul
+      li 100% refund if request within 24 hours.
+      li 50% refund if requested up to 14 days before conference.
+      li No refund available if request made within 14 days from conference date.
+      li Please send refund requests to orders@phpconf.asia
