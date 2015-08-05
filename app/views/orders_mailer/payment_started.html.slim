@@ -10,3 +10,11 @@
     h3
       | Amount Payable:
       =< number_to_currency(@purchase_order.total_amount, unit: @purchase_order.currency_unit + '฿')
+
+  p
+    | After transfer is done, please email the
+    strong<> transaction hash
+    | to
+    strong< orders@phpconf.asia
+    |. Or just reply to this email.
+  p Thank you.
