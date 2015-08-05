@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
         @purchase_order.save!
 
         if @purchase_order.total_amount_cents == 0
-          @purchase_order.update(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no)
+          @purchase_order.update(payer_info_params.merge(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no))
           OrdersMailer.payment_successful(@purchase_order).deliver_later
           return redirect_to attendees_order_path(@purchase_order.payment_token), flash: {success: "Order Received!"}
         elsif @purchase_order.currency_unit == 'SGD'

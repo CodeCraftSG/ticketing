@@ -16,7 +16,7 @@
 
     = render 'shared/order_table'
 
-    = render 'shared/payer_info' if @purchase_order.currency_unit == 'BTC'
+    = render 'shared/payer_info' if @purchase_order.total_amount_cents == 0 || @purchase_order.currency_unit == 'BTC'
 
     .actions-with-previous-step
       .previous
