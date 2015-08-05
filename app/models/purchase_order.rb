@@ -87,7 +87,7 @@ class PurchaseOrder < ActiveRecord::Base
   def currency_unit
     return orders.first.ticket_type.currency_unit if orders.present?
 
-    'SGD'
+    CURRENCY
   end
 
   def transaction_details_hash
@@ -107,7 +107,7 @@ class PurchaseOrder < ActiveRecord::Base
       ip: ip,
       token: express_token,
       payer_id: express_payer_id,
-      currency: CURRENCY
+      currency: currency_unit
     }
   end
 end
