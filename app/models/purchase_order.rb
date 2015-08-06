@@ -7,6 +7,9 @@ class PurchaseOrder < ActiveRecord::Base
   has_many :attendees, through: :tickets
   before_create :set_payment_token
 
+  validates_presence_of :payer_first_name, :payer_last_name, :payer_email, if: :needs_payment_info_early?
+  validates_email_format_of :payer_email, if: :needs_payment_info_early?
+
   CURRENCY = 'SGD'
 
   enum status: {pending: 0, success: 1, cancelled: 2}
@@ -94,6 +97,13 @@ class PurchaseOrder < ActiveRecord::Base
     return {} unless raw_payment_details.present?
 
     JSON.parse(raw_payment_details, symbolize_names: true) rescue {}
+  end
+
+  def needs_payment_info_early?
+    return true if total_amount == 0.0
+    return true if orders.size==1 && orders.first.ticket_type.currency_unit == 'BTC'
+
+    false
   end
 
   private
