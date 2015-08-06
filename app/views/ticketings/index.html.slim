@@ -36,6 +36,7 @@
                 | Unavailable
               - else
                 | Not available yet
+        = render 'shared/bitcoin_row' unless @ticket_types.count == 1
 
     .actions-with-previous-step
       .previous.payment-methods

@@ -1,0 +1,9 @@
+tr(class='coupon')
+  td
+    h3 Bitcoin Special Ticket
+    p.description Exclusive for BTC payments. Full access to both days of the conference. Lunch and tea breaks are provided. T-shirt and swag are included!
+    p.date Availability: Aug 1 — Sep 20, 2015
+  td.price BTC฿0.80
+  td(style="text-align:center;")
+    a< href="/?code=#{ENV["DEFAULT_BITCOIN_COUPON"]}" title="Click here to buy tickets with Bitcoin"
+      = image_tag 'bitcoin-accepted-here.png'
