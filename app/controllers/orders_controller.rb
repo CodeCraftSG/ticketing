@@ -14,6 +14,11 @@ class OrdersController < ApplicationController
 
     begin
       PurchaseOrder.transaction do
+        if @purchase_order.needs_payment_info_early?
+          payer_info_params.each do |k,v|
+            @purchase_order.send("#{k}=".to_sym, v)
+          end
+        end
         @purchase_order.save!
 
         if @purchase_order.total_amount_cents == 0
@@ -49,7 +54,8 @@ class OrdersController < ApplicationController
       end
     rescue => e
       Rails.logger.error "Exception: Unable to save payment (#{e.message}) for #{params}"
-      redirect_to request.referer, flash: {error: 'Unable to initiate payment.'}
+      flash.now[:error] = e.message
+      render 'ticketings/review_order'
     end
   end
 

@@ -24,7 +24,15 @@
         | Amount Payable:
         =< number_to_currency(@purchase_order.total_amount, unit: @purchase_order.currency_unit + '฿')
 
-  p A copy of the payment details has been sent to the payer's email.
+  p
+    | A copy of the payment details has been sent to the payer's email.
+    br
+    | After transfer is done, please email the
+    strong<> transaction hash
+    | to
+    strong< orders@phpconf.asia
+    |.
+    br Thank you.
 
 #bitcoin-address-template.bitcoin-address-container style=("display: none")
   div
