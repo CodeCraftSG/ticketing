@@ -30,6 +30,7 @@ ActiveAdmin.register Attendee do
       f.input :size, as: :select, collection: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
       f.input :github
     end
+    f.actions
   end
 
   show do
