@@ -24,6 +24,7 @@ ActiveAdmin.register PurchaseOrder do
       end
     end
     column :created_at
+    column :ip
     column :purchased_at
     column 'Payer' do |po|
       payer_info = []
@@ -58,6 +59,7 @@ ActiveAdmin.register PurchaseOrder do
       row :event
       row :invoice_no
       row :created_at
+      row :ip
       row :purchased_at
       row('Transaction ID') do |po|
         po.transaction_id
