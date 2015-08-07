@@ -21,6 +21,8 @@ ActiveAdmin.register Attendee do
     actions
   end
 
+  permit_params :first_name, :last_name, :email, :twitter, :size, :github
+
   form do |f|
     f.inputs 'Attendee' do
       f.input :first_name
