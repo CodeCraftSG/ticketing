@@ -32,4 +32,8 @@ class TicketType < ActiveRecord::Base
   def available?(date=DateTime.now)
     sale_starts_at <= date && sale_ends_at > date
   end
+
+  def currency_symbol
+    PurchaseOrder::VALID_CURRENCIES[currency_unit]
+  end
 end

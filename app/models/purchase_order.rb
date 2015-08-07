@@ -10,6 +10,7 @@ class PurchaseOrder < ActiveRecord::Base
   validates_presence_of :payer_first_name, :payer_last_name, :payer_email, if: :needs_payment_info_early?
   validates_email_format_of :payer_email, if: :needs_payment_info_early?
 
+  VALID_CURRENCIES = {'SGD' => '$','BTC' => '฿'}
   CURRENCY = 'SGD'
 
   enum status: {pending: 0, success: 1, cancelled: 2}
@@ -91,6 +92,10 @@ class PurchaseOrder < ActiveRecord::Base
     return orders.first.ticket_type.currency_unit if orders.present?
 
     CURRENCY
+  end
+
+  def currency_symbol
+    VALID_CURRENCIES[currency_unit]
   end
 
   def transaction_details_hash

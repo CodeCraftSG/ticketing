@@ -26,9 +26,9 @@
               p.description= type.description if type.description.present?
               p.date= "Availability: #{date_range(type.sale_starts_at, type.sale_ends_at)}"
             td.price
-              => price_with_currency(type.price, type.currency_unit + '$')
+              => price_with_currency(type.price, type.currency_unit + type.currency_symbol)
               - if type.strikethrough_price.present?
-                strike= price_with_currency(type.strikethrough_price, type.currency_unit + '$')
+                strike= price_with_currency(type.strikethrough_price, type.currency_unit + type.currency_symbol)
             td(style="text-align:center;")
               - if type.available?
                 input (id="ticket_type_#{type.id}_qty" type='number' step="1" name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")

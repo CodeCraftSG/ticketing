@@ -15,13 +15,13 @@ table.tables
             span.badge-notice Complimentary
           p.description= order.ticket_type.description if order.ticket_type.description.present?
         td.price
-          => number_to_currency(order.ticket_type.price, unit: order.ticket_type.currency_unit + '$')
+          => number_to_currency(order.ticket_type.price, unit: order.ticket_type.currency_unit + order.ticket_type.currency_symbol)
           - if order.ticket_type.strikethrough_price.present?
-            strike= number_to_currency(order.ticket_type.strikethrough_price, unit: order.ticket_type.currency_unit + '$')
+            strike= number_to_currency(order.ticket_type.strikethrough_price, unit: order.ticket_type.currency_unit + order.ticket_type.currency_symbol)
         td.price=order.quantity
-        td.price=number_to_currency(order.total_amount, unit: order.ticket_type.currency_unit + '$')
+        td.price=number_to_currency(order.total_amount, unit: order.ticket_type.currency_unit + order.ticket_type.currency_symbol)
 
   tfoot
     tr
       th.right(colspan="3" style="text-align:right;") Total:
-      th.price= number_to_currency(@purchase_order.total_amount, unit: @purchase_order.currency_unit + '$')
+      th.price= number_to_currency(@purchase_order.total_amount, unit: @purchase_order.currency_unit + @purchase_order.currency_symbol)
