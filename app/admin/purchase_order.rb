@@ -3,7 +3,7 @@ ActiveAdmin.register PurchaseOrder do
 
   config.batch_actions = false
 
-  actions :all, except: [:edit, :update, :destroy]
+  actions :all, except: [:new, :edit, :update, :destroy]
 
   filter :event
   filter :payment_token
