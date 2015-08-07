@@ -6,4 +6,14 @@
     li.step.completed 4. Attendee Particulars
 
 .content
-  div(class="flash-success") Registration completed.
+  div.flash-success Registration completed.
+
+  .partner-message
+    h3 Looking for a hotel?
+    = link_to image_tag('hotels-combined.png'), 'http://conference.hotelscombined.com/', target:'_blank'
+    p
+      a>(href="http://conference.hotelscombined.com/" target="_blank") More details
+      | about the discount.
+      br
+      a>(href="http://www.hotelscombined.com.sg/Place/Singapore.htm" target="_blank") Find a hotel
+      | in Singapore.

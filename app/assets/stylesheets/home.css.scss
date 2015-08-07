@@ -583,3 +583,8 @@ $success-color: #e6efc2 !default;
     transform: rotate(20deg);
   }
 }
+
+.partner-message {
+  @include span-columns(12);
+  margin-top: 3em;
+}
