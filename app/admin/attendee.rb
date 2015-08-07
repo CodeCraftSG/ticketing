@@ -3,7 +3,7 @@ ActiveAdmin.register Attendee do
 
   config.batch_actions = false
 
-  actions :all, except: [:edit, :update, :destroy]
+  actions :all, except: [:destroy]
 
   filter :first_name
   filter :last_name
@@ -19,6 +19,17 @@ ActiveAdmin.register Attendee do
     column :twitter
     column :github
     actions
+  end
+
+  form do |f|
+    f.inputs 'Attendee' do
+      f.input :first_name
+      f.input :last_name
+      f.input :email
+      f.input :twitter
+      f.input :size, as: :select, collection: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+      f.input :github
+    end
   end
 
   show do
