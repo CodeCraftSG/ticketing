@@ -36,6 +36,16 @@ section {
     .buy-now {
       padding: 0.75em 2em;
     }
+    .make-payment {
+      padding: 0.75em 2em;
+      background-color: #FFC449;
+      color: #053385;
+      margin-bottom: 10px;
+      &:hover{
+        background-color: #ffd273;
+        color: #053385;
+      }
+    }
     .actions {
       @include outer-container;
       .order {

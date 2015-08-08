@@ -25,7 +25,9 @@
       .next
         - if @purchase_order.total_amount_cents > 0
           - if @purchase_order.currency_unit == 'SGD'
-            input(type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png')
+            input.buy-now.make-payment(type='submit' name='next' value='Next: Make Payment >>')
+            a href="https://www.paypal.com/sg/webapps/mpp/paypal-popup" onclick="javascript:window.open('https://www.paypal.com/sg/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" title=("How PayPal Works")
+              img alt=("Buy now with PayPal") src="https://www.paypalobjects.com/webstatic/mktg/logo/PP_AcceptanceMarkTray-NoDiscover_243x40.png" /
           - else
             input(type='image' src=image_url('bitcoin-buy-it-now-button.png'))
         - else
