@@ -8,4 +8,8 @@ RSpec.describe Attendee, type: :model do
     it { should validate_email_format_of(:email) }
     it { should validate_presence_of(:size) }
   end
+
+  describe 'associations' do
+    it { should have_many(:tickets) }
+  end
 end
