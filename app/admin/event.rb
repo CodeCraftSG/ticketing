@@ -49,8 +49,11 @@ ActiveAdmin.register Event do
       row 'Timing' do |event|
         "#{event.daily_start_time} - #{event.daily_end_time}"
       end
-      row :description
+      row 'Description' do |event| simple_format event.description end
       row 'Active' do |event| status_tag(event.active ? 'yes': 'no') end
+      row 'Attendees' do |event| event.attendees.count end
+      row 'Purchase Orders' do |event| event.purchase_orders.count end
+      row 'Total Amount' do |event| number_to_currency(event.purchase_orders.reduce(0.0){ |sum,n| sum + n.total_amount.to_f }, unit: '$') end
     end
   end
 end
