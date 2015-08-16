@@ -21,7 +21,7 @@ class PurchaseOrder < ActiveRecord::Base
   end
 
   def calculate_amount
-    self.total_amount_cents = orders.inject(0){|sum, order| sum + order.total_amount_cents}
+    self.total_amount_cents = orders.inject(0){|sum, order| sum + order.calculate_amount.total_amount_cents}
 
     self
   end
@@ -34,9 +34,9 @@ class PurchaseOrder < ActiveRecord::Base
     return '' if orders.count == 0
     if orders.count == 1
       order = orders.first
-      "#{order.ticket_type.name} (#{order.quantity} tickets)"
+      "#{order.ticket_type.name} (#{order.quantity * order.ticket_type.entitlement} tickets)"
     else
-      orders.map{|o| "#{o.ticket_type.name} (#{o.quantity} tickets)" }.join(', ')
+      orders.map{|o| "#{o.ticket_type.name} (#{o.quantity * o.ticket_type.entitlement} tickets)" }.join(', ')
     end
   end
 

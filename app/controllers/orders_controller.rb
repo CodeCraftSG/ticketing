@@ -94,7 +94,7 @@ class OrdersController < ApplicationController
       Attendee.transaction do
         @purchase_order.orders.each do |order|
           order.tickets.delete_all
-          (1..order.quantity).each do |i|
+          (1..order.ticket_entitlement).each do |i|
             person = params[:order][order.id.to_s][i.to_s]
             attendee = Attendee.create!(
                 first_name: person[:first_name],

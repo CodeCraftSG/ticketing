@@ -30,6 +30,15 @@ RSpec.describe Order, type: :model do
     end
   end
 
+  describe '#ticket_entitlement' do
+    let(:bulk_type) { FactoryGirl.build :ticket_type, entitlement: 3 }
+    let(:order) { FactoryGirl.build :order, quantity: 2, ticket_type: bulk_type }
+
+    it 'returns number of tickets entitled' do
+      expect(order.ticket_entitlement).to eq 6
+    end
+  end
+
   describe '#send_attendee_notifications' do
     xit 'calls OrderMailer' do
       order = FactoryGirl.build :order

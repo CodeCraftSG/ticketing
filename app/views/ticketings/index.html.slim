@@ -20,9 +20,12 @@
         - @ticket_types.each do |type|
           tr class=(type.code.present? ? 'coupon' : '')
             td
-              h3= type.name
-              - if type.complimentary?
-                span.badge-notice Complimentary
+              h3
+                = type.name
+                - if type.complimentary?
+                  span.badge-notice< Complimentary
+                - if type.entitlement > 1
+                  span.badge-alert<="Bulk pricing - #{type.entitlement} tickets"
               p.description= type.description if type.description.present?
               p.date= "Availability: #{date_range(type.sale_starts_at, type.sale_ends_at)}"
             td.price

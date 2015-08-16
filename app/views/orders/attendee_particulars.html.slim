@@ -14,7 +14,7 @@
       h2 Please provide us with your particulars.
     input name="authenticity_token" type="hidden" value=form_authenticity_token
     - @purchase_order.orders.each do |order|
-      - (1..order.quantity).each do |i|
+      - (1..order.ticket_entitlement).each do |i|
         - person = params.try(:[], :order).try(:[], order.id.to_s).try(:[], i.to_s) || {}
         fieldset.attendee
           h3= "#{order.ticket_type.name} - Ticket #{i}"
