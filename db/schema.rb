@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803163750) do
+ActiveRecord::Schema.define(version: 20150816071200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,21 +113,22 @@ ActiveRecord::Schema.define(version: 20150803163750) do
     t.integer  "event_id"
     t.string   "name"
     t.text     "description"
-    t.decimal  "strikethrough_price", precision: 5, scale: 2
-    t.decimal  "price",               precision: 5, scale: 2
+    t.decimal  "strikethrough_price", precision: 10, scale: 2
+    t.decimal  "price",               precision: 10, scale: 2
     t.integer  "quota"
     t.boolean  "hidden"
     t.string   "code"
     t.boolean  "active"
     t.datetime "sale_starts_at"
     t.datetime "sale_ends_at"
-    t.datetime "created_at",                                                  null: false
-    t.datetime "updated_at",                                                  null: false
-    t.integer  "sequence",                                    default: 0,     null: false
+    t.datetime "created_at",                                                   null: false
+    t.datetime "updated_at",                                                   null: false
+    t.integer  "sequence",                                     default: 0,     null: false
     t.boolean  "complimentary"
     t.boolean  "needs_document"
-    t.string   "currency_unit",                               default: "SGD"
-    t.boolean  "standalone",                                  default: false
+    t.string   "currency_unit",                                default: "SGD"
+    t.boolean  "standalone",                                   default: false
+    t.integer  "entitlement",                                  default: 1
   end
 
   add_index "ticket_types", ["event_id"], name: "index_ticket_types_on_event_id", using: :btree
