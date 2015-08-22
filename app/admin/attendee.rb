@@ -15,6 +15,7 @@ ActiveAdmin.register Attendee do
     column :first_name
     column :last_name
     column :email
+    column :cutting
     column :size
     column :twitter
     column :github
@@ -29,6 +30,7 @@ ActiveAdmin.register Attendee do
       f.input :last_name
       f.input :email
       f.input :twitter
+      f.input :cutting, as: :select, collection: ['Men size', 'Ladies size']
       f.input :size, as: :select, collection: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
       f.input :github
     end
@@ -40,6 +42,7 @@ ActiveAdmin.register Attendee do
       row :first_name
       row :last_name
       row :email
+      row :cutting
       row :size
       row :twitter
       row :github

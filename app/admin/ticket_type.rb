@@ -101,7 +101,7 @@ ActiveAdmin.register TicketType do
             column('First name') { |t| t.first_name }
             column('Last name') { |t| t.last_name }
             column('Email') { |t| t.email }
-            column('Size') { |t| t.size }
+            column('Size') { |t| "#{t.cutting} #{t.size}" }
             column('Twitter') { |t| t.twitter }
             column('Github') { |t| t.github }
           end

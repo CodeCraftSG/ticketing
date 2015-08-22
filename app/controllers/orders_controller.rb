@@ -102,6 +102,7 @@ class OrdersController < ApplicationController
                 email: person[:email],
                 twitter: person[:twitter].gsub(/[@]/,''),
                 github: person[:github],
+                cutting: person[:cutting],
                 size: person[:size]
             )
             ticket = Ticket.new(attendee: attendee)

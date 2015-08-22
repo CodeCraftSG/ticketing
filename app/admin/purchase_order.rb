@@ -103,7 +103,7 @@ ActiveAdmin.register PurchaseOrder do
         column('First name') { |t| t.attendee.first_name }
         column('Last name') { |t| t.attendee.last_name }
         column('Email') { |t| t.attendee.email }
-        column('Size') { |t| t.attendee.size }
+        column('Size') { |t| "#{t.attendee.cutting} #{t.attendee.size}" }
         column('Twitter') { |t| t.attendee.twitter }
         column('Github') { |t| t.attendee.github }
         column('Document') do |t|
