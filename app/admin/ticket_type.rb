@@ -70,27 +70,43 @@ ActiveAdmin.register TicketType do
   end
 
   show do
-    attributes_table do
-      row :event
-      row :sequence
-      row :name
-      row :description
-      row :sale_starts_at
-      row :sale_ends_at
-      row('Price'){ |t| number_to_currency(t.price, unit: t.currency_unit) }
-      row 'Strike Through Price' do |t|
-        "<strike>#{number_to_currency(t.strikethrough_price, unit: t.currency_unit)}</strike>".html_safe
-      end if ticket_type.strikethrough_price
-      row('Quota') do |t|
-        "#{t.attendees.count}/#{t.quota}"
+    tabs do
+      tab 'Ticket Type' do
+        attributes_table do
+          row :event
+          row :sequence
+          row :name
+          row :description
+          row :sale_starts_at
+          row :sale_ends_at
+          row('Price'){ |t| number_to_currency(t.price, unit: t.currency_unit) }
+          row 'Strike Through Price' do |t|
+            "<strike>#{number_to_currency(t.strikethrough_price, unit: t.currency_unit)}</strike>".html_safe
+          end if ticket_type.strikethrough_price
+          row('Quota') do |t|
+            "#{t.attendees.count}/#{t.quota}"
+          end
+          row :entitlement
+          row('Hidden'){ |t| status_tag(t.hidden? ? 'yes' : 'no') }
+          row('Complimentary'){ |t| status_tag(t.complimentary? ? 'yes' : 'no') }
+          row('Standalone'){ |t| status_tag(t.standalone? ? 'yes' : 'no') }
+          row('Needs Document?'){ |t| status_tag(t.needs_document? ? 'yes' : 'no') }
+          row :code if ticket_type.code.present?
+          row('Active'){ |t| status_tag(t.active ? 'yes' : 'no') }
+        end
       end
-      row :entitlement
-      row('Hidden'){ |t| status_tag(t.hidden? ? 'yes' : 'no') }
-      row('Complimentary'){ |t| status_tag(t.complimentary? ? 'yes' : 'no') }
-      row('Standalone'){ |t| status_tag(t.standalone? ? 'yes' : 'no') }
-      row('Needs Document?'){ |t| status_tag(t.needs_document? ? 'yes' : 'no') }
-      row :code if ticket_type.code.present?
-      row('Active'){ |t| status_tag(t.active ? 'yes' : 'no') }
+      tab 'Attendees' do
+        panel 'Ticket Holders' do
+          table_for ticket_type.attendees do |attendee|
+            column('First name') { |t| t.first_name }
+            column('Last name') { |t| t.last_name }
+            column('Email') { |t| t.email }
+            column('Size') { |t| t.size }
+            column('Twitter') { |t| t.twitter }
+            column('Github') { |t| t.github }
+          end
+        end
+      end
     end
   end
 end
