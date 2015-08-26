@@ -6,6 +6,9 @@ class PurchaseOrder < ActiveRecord::Base
   has_many :tickets, through: :orders
   has_many :attendees, through: :tickets
   before_create :set_payment_token
+  before_validation :calculate_amount
+
+  accepts_nested_attributes_for :orders, allow_destroy: true
 
   validates_presence_of :payer_first_name, :payer_last_name, :payer_email, if: :needs_payment_info_early?
   validates_email_format_of :payer_email, if: :needs_payment_info_early?

@@ -7,6 +7,7 @@ class Order < ActiveRecord::Base
   belongs_to :ticket_type
   has_many :tickets, dependent: :destroy
   has_many :attendees, through: :tickets, dependent: :destroy
+  before_validation :calculate_amount
 
   def total_amount
     calculate_amount if total_amount_cents.nil? && quantity > 0

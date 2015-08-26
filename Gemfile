@@ -45,6 +45,7 @@ gem 'carrierwave'
 gem 'carrierwave-dropbox'
 gem 'newrelic_rpm'
 gem 'blockchain'
+gem 'country_select', github: 'stefanpenner/country_select'
 
 group :development, :test do
   gem 'foreman'

@@ -1,9 +1,12 @@
 ActiveAdmin.register PurchaseOrder do
   menu priority: 3
 
-  config.batch_actions = false
+  permit_params :event_id, :invoice_no, :purchased_at, :payment_token, :ip,
+    :payer_first_name, :payer_last_name, :payer_email, :payer_address, :payer_country, :status,
+    orders_attributes: [:id, :purchase_order_id, :ticket_type_id, :quantity, :total_amount_cents, :_destroy]
 
-  actions :all, except: [:new, :edit, :update, :destroy]
+  # config.batch_actions = false
+  # actions :all, except: [:new, :edit, :update, :destroy]
 
   filter :event
   filter :payment_token
@@ -14,7 +17,22 @@ ActiveAdmin.register PurchaseOrder do
   filter :payer_email
   filter :status, as: :check_boxes, collection: PurchaseOrder.statuses
 
+  controller do
+    def new
+      @purchase_order = PurchaseOrder.new
+      @purchase_order.event = Event.first
+      @purchase_order.purchased_at = Date.today
+      @purchase_order.status = :pending
+    end
+
+    def create
+      params['purchase_order']['ip'] = request.remote_ip
+      super
+    end
+  end
+
   index do
+    selectable_column
     column :event
     column('Payment Token / Invoice') do |po|
       if po.invoice_no.present?
@@ -52,6 +70,40 @@ ActiveAdmin.register PurchaseOrder do
       status_tag po.status, status_txt
     end
     actions
+  end
+
+  form do |f|
+    tabs do
+      tab 'Details' do
+        inputs 'Purchase Details' do
+          f.input :event
+          f.input :invoice_no
+          f.input :purchased_at, as: :datepicker
+          f.input :status, as: :select, collection: PurchaseOrder.statuses.keys
+        end
+        inputs 'Other Details' do
+          f.input :notes
+        end
+      end
+      tab 'Payer' do
+        inputs 'Payer Details' do
+          f.input :payer_first_name, label: 'First name'
+          f.input :payer_last_name, label: 'Last name'
+          f.input :payer_email, label: 'Email'
+          f.input :payer_country, label: 'Country', priority_countries: ['SG'], include_blank: true
+          f.input :payer_address, label: 'Address'
+        end
+      end
+      tab 'Orders' do
+        f.inputs do
+          f.has_many :orders, new_record: 'New Order', allow_destroy: true do |o|
+            o.input :ticket_type_id, as: :select, collection: TicketType.all
+            o.input :quantity
+          end
+        end
+      end
+    end
+    f.actions
   end
 
   show do
@@ -118,6 +170,15 @@ ActiveAdmin.register PurchaseOrder do
           end
         end
       end
+    end
+  end
+
+  sidebar :notification, only: :show do
+    div style:'text-align:center;padding-bottom: 10px;' do
+      button_to 'Resend email to Payer', admin_purchase_order_path(resource), method: 'get'
+    end
+    div style:'text-align:center;' do
+      button_to 'Resend email to Attendees', admin_purchase_order_path(resource), method: 'get'
     end
   end
 end
