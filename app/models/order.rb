@@ -15,7 +15,7 @@ class Order < ActiveRecord::Base
   end
 
   def calculate_amount
-    self.total_amount_cents = quantity * ticket_type.price * 100
+    self.total_amount_cents = quantity * ticket_type.price * 100 if ticket_type
 
     self
   end
