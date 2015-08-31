@@ -23,9 +23,9 @@ ActiveAdmin.register TicketType do
     column('Stats') do |e|
       display = []
       display << "Entitlement: #{e.entitlement}"
-      display << "Orders: #{e.orders.count}"
-      display << "Qty: #{e.orders.reduce(0) do |sum,order| sum + order.quantity end}"
-      display << "Sold: #{e.orders.reduce(0) do |sum,order| sum + (e.entitlement * order.quantity) end}"
+      display << "Orders: #{e.orders.select{|o| o.purchase_order.status == 'success' }.count}"
+      display << "Qty: #{e.orders.select{|o| o.purchase_order.status == 'success' }.reduce(0) do |sum,order| sum + order.quantity end}"
+      display << "Sold: #{e.orders.select{|o| o.purchase_order.status == 'success' }.reduce(0) do |sum,order| sum + (e.entitlement * order.quantity) end}"
       display << "Quota: #{e.quota}"
       display << "Attendees: #{e.attendees.count}"
       display.join('<br/>').html_safe
