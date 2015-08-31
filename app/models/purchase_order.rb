@@ -114,6 +114,12 @@ class PurchaseOrder < ActiveRecord::Base
     false
   end
 
+  def entitlements
+    orders.reduce(0) do |sum, order|
+      sum + (order.ticket_type.entitlement * order.quantity)
+    end
+  end
+
   private
 
   def set_payment_token

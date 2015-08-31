@@ -10,6 +10,9 @@ ActiveAdmin.register TicketType do
     column :event
     column :sequence
     column :name
+    column 'Sale Period' do |t|
+      date_range(t.sale_starts_at, t.sale_ends_at)
+    end
     column 'Price' do |e|
       str = []
       str << number_to_currency(e.price, unit: e.currency_unit)
@@ -17,15 +20,19 @@ ActiveAdmin.register TicketType do
 
       str.join('<br/>').html_safe
     end
-    column :entitlement
-    column('Quota') do |e|
-      "#{e.attendees.count}/#{e.quota}"
+    column('Stats') do |e|
+      display = []
+      display << "Entitlement: #{e.entitlement}"
+      display << "Orders: #{e.orders.count}"
+      display << "Qty: #{e.orders.reduce(0) do |sum,order| sum + order.quantity end}"
+      display << "Sold: #{e.orders.reduce(0) do |sum,order| sum + (e.entitlement * order.quantity) end}"
+      display << "Quota: #{e.quota}"
+      display << "Attendees: #{e.attendees.count}"
+      display.join('<br/>').html_safe
     end
     column :hidden
     column :standalone
     column :code
-    column :sale_starts_at
-    column :sale_ends_at
     column :active
     actions
   end

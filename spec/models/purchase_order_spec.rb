@@ -105,4 +105,17 @@ RSpec.describe PurchaseOrder, type: :model do
       end
     end
   end
+
+  describe 'entitlements' do
+    let(:early_bird) { FactoryGirl.create :ticket_type, name: 'Early Bird', price: 200.50, entitlement: 2 }
+    let(:student) { FactoryGirl.create :ticket_type, name: 'Student', price: 90, entitlement: 1 }
+
+    let(:order1) { FactoryGirl.create :order, ticket_type: early_bird, quantity: 2 }
+    let(:order2) { FactoryGirl.create :order, ticket_type: student, quantity: 1 }
+    subject{ FactoryGirl.create :purchase_order, orders: [order1, order2] }
+
+    it 'returns 5' do
+      expect(subject.entitlements).to eq 5
+    end
+  end
 end
