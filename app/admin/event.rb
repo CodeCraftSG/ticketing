@@ -1,7 +1,10 @@
 ActiveAdmin.register Event do
   menu priority: 1
 
-  permit_params :name, :start_date, :end_date, :daily_start_time, :daily_end_time, :description, :active
+  permit_params :name, :start_date, :end_date, :daily_start_time, :daily_end_time, :description, :active,
+    ticket_types_attributes: [:sequence, :name,:description,:sale_starts_at,:sale_ends_at,:currency_unit,:price,
+    :strikethrough_price,:quota,:entitlement,:hidden,:complimentary,:standalone,
+    :needs_document,:code,:active,:_destroy]
 
   index do
     selectable_column
@@ -29,14 +32,39 @@ ActiveAdmin.register Event do
   end
 
   form do |f|
-    f.inputs 'Event' do
-      f.input :name
-      f.input :start_date, as: :datepicker
-      f.input :end_date, as: :datepicker
-      f.input :daily_start_time
-      f.input :daily_end_time
-      f.input :description
-      f.input :active
+    tabs do
+      tab 'Event' do
+        f.inputs 'Event' do
+          f.input :name
+          f.input :start_date, as: :datepicker
+          f.input :end_date, as: :datepicker
+          f.input :daily_start_time
+          f.input :daily_end_time
+          f.input :description
+          f.input :active
+        end
+      end
+      tab 'Ticket Types' do
+        f.inputs do
+          f.has_many :ticket_types, new_record: 'New Type', allow_destroy: true do |t|
+            t.input :name
+            t.input :description, input_html: {rows: 5}
+            t.input :sale_starts_at
+            t.input :sale_ends_at
+            t.input :currency_unit
+            t.input :price
+            t.input :strikethrough_price, label: 'Strike Through Price'
+            t.input :quota
+            t.input :entitlement
+            t.input :hidden
+            t.input :complimentary
+            t.input :standalone
+            t.input :needs_document
+            t.input :code
+            t.input :active
+          end
+        end
+      end
     end
     f.actions
   end

@@ -46,6 +46,7 @@ gem 'carrierwave-dropbox'
 gem 'newrelic_rpm'
 gem 'blockchain'
 gem 'country_select', github: 'stefanpenner/country_select'
+gem 'active_admin-sortable_tree'
 
 group :development, :test do
   gem 'foreman'

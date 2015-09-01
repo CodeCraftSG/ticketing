@@ -4,6 +4,7 @@ ActiveAdmin.register TicketType do
   permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary, :standalone, :needs_document, :currency_unit, :entitlement
 
   config.sort_order = 'sequence_asc'
+  sortable tree: false, sorting_attribute: :sequence
 
   index do
     selectable_column
@@ -34,6 +35,13 @@ ActiveAdmin.register TicketType do
     column :standalone
     column :code
     column :active
+    actions
+  end
+
+  index as: :sortable do
+    label do |t|
+      "#{t.name} - #{number_to_currency(t.price, unit: t.currency_unit)} (#{date_range(t.sale_starts_at, t.sale_ends_at)})"
+    end
     actions
   end
 
