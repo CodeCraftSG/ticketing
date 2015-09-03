@@ -31,6 +31,18 @@ ActiveAdmin.register PurchaseOrder do
     end
   end
 
+  member_action :resend_payer_email do
+    OrdersMailer.payment_successful(resource).deliver_later
+    redirect_to resource_path, notice: "Send email to #{resource.payer_email}"
+  end
+
+  member_action :resend_attendee_emails do
+    resource.orders.each do |order|
+      order.send_attendee_notifications
+    end
+    redirect_to resource_path, notice: "Send email to attendees"
+  end
+
   index do
     selectable_column
     column :event
@@ -175,10 +187,10 @@ ActiveAdmin.register PurchaseOrder do
 
   sidebar :notification, only: :show do
     div style:'text-align:center;padding-bottom: 10px;' do
-      button_to 'Resend email to Payer', admin_purchase_order_path(resource), method: 'get'
+      button_to 'Resend email to Payer', resend_payer_email_admin_purchase_order_path(resource), method: 'get'
     end
     div style:'text-align:center;' do
-      button_to 'Resend email to Attendees', admin_purchase_order_path(resource), method: 'get'
+      button_to 'Resend email to Attendees', resend_attendee_emails_admin_purchase_order_path(resource), method: 'get'
     end
   end
 end
