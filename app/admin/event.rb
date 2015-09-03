@@ -3,7 +3,7 @@ ActiveAdmin.register Event do
 
   permit_params :name, :start_date, :end_date, :daily_start_time, :daily_end_time, :description, :active,
     ticket_types_attributes: [:sequence, :name,:description,:sale_starts_at,:sale_ends_at,:currency_unit,:price,
-    :strikethrough_price,:quota,:entitlement,:hidden,:complimentary,:standalone,
+    :strikethrough_price,:quota,:entitlement, :restrict_quantity_per_order,:quantity_per_order,:hidden,:complimentary,:standalone,
     :needs_document,:code,:active,:_destroy]
 
   index do
@@ -56,6 +56,8 @@ ActiveAdmin.register Event do
             t.input :strikethrough_price, label: 'Strike Through Price'
             t.input :quota
             t.input :entitlement
+            t.input :restrict_quantity_per_order
+            t.input :quantity_per_order
             t.input :hidden
             t.input :complimentary
             t.input :standalone
