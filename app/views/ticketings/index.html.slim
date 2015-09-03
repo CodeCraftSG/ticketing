@@ -34,7 +34,10 @@
                 strike= number_to_currency(type.strikethrough_price, unit: type.currency_unit + type.currency_symbol)
             td(style="text-align:center;")
               - if type.available?
-                input (id="ticket_type_#{type.id}_qty" type='number' step="1" name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")
+                - if type.restrict_quantity_per_order?
+                  =type.quantity_per_order
+                - else
+                  input (id="ticket_type_#{type.id}_qty" type='number' step="1" name="ticket_type[#{type.id}][qty]" value="#{@orders[type.id]}" min="0" max="50")
               - elsif type.sale_ends_at < DateTime.now
                 | Unavailable
               - else

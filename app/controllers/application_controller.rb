@@ -21,7 +21,12 @@ class ApplicationController < ActionController::Base
     @purchase_order = PurchaseOrder.new(ip: request.remote_ip, status: :pending, event: @event)
 
     @ticket_types.each do |ticket_type|
-      qty = orders_param[ticket_type.id.to_s].try(:to_i) || 0
+      qty = 0
+      if ticket_type.restrict_quantity_per_order? && ticket_type.quantity_per_order > 0
+        qty = ticket_type.quantity_per_order
+      elsif orders_param[ticket_type.id.to_s].present?
+        qty = orders_param[ticket_type.id.to_s].try(:to_i) || 0
+      end
       if qty > 0
         @purchase_order.orders << Order.new(ticket_type:ticket_type, quantity:qty).calculate_amount
       end
