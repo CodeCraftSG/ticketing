@@ -2,7 +2,7 @@ ActiveAdmin.register PurchaseOrder do
   menu priority: 3
 
   permit_params :event_id, :invoice_no, :purchased_at, :payment_token, :ip,
-    :payer_first_name, :payer_last_name, :payer_email, :payer_address, :payer_country, :status,
+    :payer_first_name, :payer_last_name, :payer_email, :payer_address, :payer_country, :status, :notes,
     orders_attributes: [:id, :purchase_order_id, :ticket_type_id, :quantity, :total_amount_cents, :_destroy]
 
   # config.batch_actions = false
