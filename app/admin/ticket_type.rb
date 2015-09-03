@@ -1,7 +1,7 @@
 ActiveAdmin.register TicketType do
   menu priority: 2
 
-  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary, :standalone, :needs_document, :currency_unit, :entitlement
+  permit_params :event_id, :sequence, :name, :description, :strikethrough_price, :price, :quota, :hidden, :code, :active, :sale_starts_at, :sale_ends_at, :complimentary, :standalone, :needs_document, :currency_unit, :entitlement, :restrict_quantity_per_order, :quantity_per_order
 
   config.sort_order = 'sequence_asc'
   sortable tree: false, sorting_attribute: :sequence
@@ -74,6 +74,8 @@ ActiveAdmin.register TicketType do
       f.input :strikethrough_price, label: 'Strike Through Price'
       f.input :quota
       f.input :entitlement
+      f.input :restrict_quantity_per_order
+      f.input :quantity_per_order
       f.input :hidden
       f.input :complimentary
       f.input :standalone
@@ -102,6 +104,8 @@ ActiveAdmin.register TicketType do
             "#{t.attendees.count}/#{t.quota}"
           end
           row :entitlement
+          row('Restrict Quantity Per Order'){ |t| status_tag(t.restrict_quantity_per_order? ? 'yes' : 'no') }
+          row :quantity_per_order
           row('Hidden'){ |t| status_tag(t.hidden? ? 'yes' : 'no') }
           row('Complimentary'){ |t| status_tag(t.complimentary? ? 'yes' : 'no') }
           row('Standalone'){ |t| status_tag(t.standalone? ? 'yes' : 'no') }
