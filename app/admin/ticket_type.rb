@@ -9,7 +9,6 @@ ActiveAdmin.register TicketType do
   index do
     selectable_column
     column :event
-    column :sequence
     column :name
     column 'Sale Period' do |t|
       date_range(t.sale_starts_at, t.sale_ends_at)
