@@ -2,7 +2,7 @@ ActiveAdmin.register Event do
   menu priority: 1
 
   permit_params :name, :start_date, :end_date, :daily_start_time, :daily_end_time, :description, :active,
-    ticket_types_attributes: [:sequence, :name,:description,:sale_starts_at,:sale_ends_at,:currency_unit,:price,
+    ticket_types_attributes: [:id, :sequence, :name,:description,:sale_starts_at,:sale_ends_at,:currency_unit,:price,
     :strikethrough_price,:quota,:entitlement, :restrict_quantity_per_order,:quantity_per_order,:hidden,:complimentary,:standalone,
     :needs_document,:code,:active,:_destroy]
 
