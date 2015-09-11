@@ -30,8 +30,7 @@ class OrdersController < ApplicationController
             charge_details = {currency: @purchase_order.currency_unit,
                               description: @purchase_order.description,
                               statement_descriptor: @purchase_order.auto_invoice_no,
-                              receipt_email: stripe_params[:payer_email],
-                              metadata: { order_id: @purchase_order.auto_invoice_no, email: stripe_params[:payer_email] },
+                              email: stripe_params[:payer_email],
                               order_id: @purchase_order.auto_invoice_no
             }
             response = STRIPE_GATEWAY.purchase(@purchase_order.total_amount_cents, params[:stripeToken], charge_details)

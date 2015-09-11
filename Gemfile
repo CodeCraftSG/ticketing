@@ -32,7 +32,7 @@ gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'devise'
 gem 'active_record_union'
 gem 'time_will_tell'
-gem 'activemerchant'
+gem 'activemerchant', git:'https://github.com/CodeCraftSG/active_merchant.git', branch:'stripe_receipt_email'
 gem 'paper_trail', '~> 4.0.0.rc'
 
 gem 'bourbon'
