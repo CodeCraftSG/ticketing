@@ -73,12 +73,12 @@ ActiveAdmin.register Event do
 
   member_action :attendance_list, method: :get do
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << %w(invoice date ticket first_name last_name email size)
+      csv << %w(invoice date ticket public_id first_name last_name email size)
 
       resource.purchase_orders.success.order('invoice_no ASC').each do |po|
         po.orders.each do |o|
           o.attendees.each do |a|
-            csv << [po.invoice_no, po.created_at.strftime('%d-%b-%Y'), o.ticket_type.name, a.first_name, a.last_name, a.email, "#{a.cutting} #{a.size}"]
+            csv << [po.invoice_no, po.created_at.strftime('%d-%b-%Y'), o.ticket_type.name, a.public_id, a.first_name, a.last_name, a.email, "#{a.cutting} #{a.size}"]
           end
         end
       end
