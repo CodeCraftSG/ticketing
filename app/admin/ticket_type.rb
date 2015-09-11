@@ -115,7 +115,7 @@ ActiveAdmin.register TicketType do
       end
       tab 'Attendees' do
         panel 'Ticket Holders' do
-          table_for ticket_type.attendees do |attendee|
+          table_for ticket_type.attendees do |t|
             column('First name') { |t| t.first_name }
             column('Last name') { |t| t.last_name }
             column('Email') { |t| t.email }

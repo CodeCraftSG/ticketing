@@ -18,6 +18,7 @@
         p
           - if @attendee.size.present?
             strong> T-shirt size:
+            => @attendee.cutting
             => @attendee.size
           - if @attendee.twitter.present?
             | /
@@ -28,6 +29,10 @@
             strong<> Github
             => "#{@attendee.github}"
 
+  h3 Attendee Particulars
+  p
+    | You may update the above info at this URL:
+    =< link_to attendee_url(@attendee.public_id), attendee_url(@attendee.public_id)
   h3 Ticketing
   p Please bring along this ticket and a photo ID (eg. your passport, driver's license or national identification card) on the day of the event to claim your event lanyard.
   h3 Getting to the venue

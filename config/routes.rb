@@ -26,4 +26,5 @@ Rails.application.routes.draw do
       get '/complete', to: 'bitcoins#complete_payment'
     end
   end
+  resources :attendees, only: [:show, :update]
 end

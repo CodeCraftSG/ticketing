@@ -72,18 +72,36 @@ ActiveAdmin.register Event do
   end
 
   show do
-    attributes_table do
-      row :name
-      row :start_date, label: 'From'
-      row :end_date, label: 'To'
-      row 'Timing' do |event|
-        "#{event.daily_start_time} - #{event.daily_end_time}"
+    tabs do
+      tab 'Event' do
+        attributes_table do
+          row :name
+          row :start_date, label: 'From'
+          row :end_date, label: 'To'
+          row 'Timing' do |event|
+            "#{event.daily_start_time} - #{event.daily_end_time}"
+          end
+          row 'Description' do |event| simple_format event.description end
+          row 'Active' do |event| status_tag(event.active ? 'yes': 'no') end
+          row 'Attendees' do |event| event.attendees.count end
+          row 'Purchase Orders' do |event| event.purchase_orders.success.count end
+          row 'Total Amount' do |event| number_to_currency(event.purchase_orders.success.reduce(0.0){ |sum,n| sum + n.total_amount.to_f }, unit: '$') end
+        end
       end
-      row 'Description' do |event| simple_format event.description end
-      row 'Active' do |event| status_tag(event.active ? 'yes': 'no') end
-      row 'Attendees' do |event| event.attendees.count end
-      row 'Purchase Orders' do |event| event.purchase_orders.success.count end
-      row 'Total Amount' do |event| number_to_currency(event.purchase_orders.success.reduce(0.0){ |sum,n| sum + n.total_amount.to_f }, unit: '$') end
+      tab 'Attendees' do
+        panel 'Ticket Holders' do
+          paginated_collection(event.attendees.page(params[:page]), download_links: false) do
+            table_for collection do
+              column('First name') { |t| t.first_name }
+              column('Last name') { |t| t.last_name }
+              column('Email') { |t| t.email }
+              column('Size') { |t| "#{t.cutting} #{t.size}" }
+              column('Twitter') { |t| t.twitter }
+              column('Github') { |t| t.github }
+            end
+          end
+        end
+      end
     end
   end
 end

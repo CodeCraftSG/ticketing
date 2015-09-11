@@ -1,0 +1,103 @@
+- flash.each do |key, value|
+  div(class="flash-#{key}")=value
+
+.content
+  form(method="post" action="/attendees/#{@attendee.public_id}" enctype="multipart/form-data")
+    .notice
+      h2 Please provide us with your particulars.
+    input name="authenticity_token" type="hidden" value=form_authenticity_token
+    input name="_method" type="hidden" value="put"
+    fieldset.attendee
+      /h3= "#{order.ticket_type.name} - Ticket #{i}"
+      .name
+        .col
+          label(for="first_name") First name*
+          input(type="text" id="first_name" name="attendee[first_name]" value="#{@attendee[:first_name]}")
+        .col
+          label(for="last_name") Last name*
+          input(type="text" id="last_name" name="attendee[last_name]" value="#{@attendee[:last_name]}")
+      .contact_others
+        .col
+          label(for="email") Email*
+          input(type="text" id="email" name="attendee[email]" value="#{@attendee[:email]}")
+        .col
+          label(for="cutting") T-shirt size
+          .button-group
+            - ["Men size","Ladies size"].each do |cutting|
+              label
+                input(type="radio" name="attendee[cutting]" value="#{cutting}" checked=(cutting == @attendee[:cutting])  )
+                span.button-group-item= cutting
+          small
+            | &nbsp;[
+            a<>(href="#tshirt-size") size chart
+            | ]
+      .contact_others
+        .col
+          | &nbsp;
+        .col
+          .button-group
+            - ['XS', 'S', 'M', 'L', 'XL', 'XXL'].each do |size|
+              label
+                input(type="radio" name="attendee[size]" value="#{size}" checked=(size == @attendee[:size])  )
+                span.button-group-item= size
+
+      .contact_others
+        .col
+          label(for="twitter") Twitter
+          input(type="text" id="twitter" name="attendee[twitter]" value="#{@attendee[:twitter]}")
+        .col
+          label(for="github") Github
+          input(type="text" id="github" name="attendee[github]" value="#{@attendee[:github]}")
+
+    .actions
+      .order
+        input.buy-now(type='submit' name='finalize' value='Save Attendee Particulars')
+
+    hr
+
+    fieldset#tshirt-size
+      h2 T-shirt Size Chart
+      p We are please to offer 2 different size ranges for men and women. Please have a look at the different size dimensions below before you decide on the right size.
+
+      table
+        thead
+          tr
+            th(colspan="2") Men size
+            th(colspan="2") Ladies size
+        tbody
+          tr
+            td XS
+            td 44cm x 64cm
+            td
+            td
+          tr
+            td S
+            td 47cm x 67cm
+            td S
+            td 40.5cm x 58.5cm
+          tr
+            td M
+            td 50cm x 70cm
+            td M
+            td 43cm x 61cm
+          tr
+            td L
+            td 53cm x 73cm
+            td L
+            td 46cm x 54.1cm
+          tr
+            td XL
+            td 56cm x 75cm
+            td XL
+            td 49cm x 66cm
+          tr
+            td XXL
+            td 59cm x 77cm
+            td
+            td
+          tr
+            td XXXL
+            td 62cm x 79cm
+            td
+            td
+
