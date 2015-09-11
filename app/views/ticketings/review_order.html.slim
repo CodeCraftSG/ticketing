@@ -9,7 +9,7 @@
   div(class="flash-#{key}")=value
 
 .content
-  form(method="post" action="/orders/checkout")
+  form#checkout-form(method="post" action="/orders/checkout")
     input name="authenticity_token" type="hidden" value=form_authenticity_token
     input type='hidden' name="event_id" value=@event.id
     input type='hidden' name="code" value=coupon_code
@@ -25,9 +25,11 @@
       .next
         - if @purchase_order.total_amount_cents > 0
           - if @purchase_order.currency_unit == 'SGD'
-            input.buy-now.make-payment(type='submit' name='next' value='Next: Make Payment >>')
-            a href="https://www.paypal.com/sg/webapps/mpp/paypal-popup" onclick="javascript:window.open('https://www.paypal.com/sg/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" title=("How PayPal Works")
-              img alt=("Buy now with PayPal") src="https://www.paypalobjects.com/webstatic/mktg/logo/PP_AcceptanceMarkTray-NoDiscover_243x40.png" /
+            span Choose payment method:
+            a(href="javascript:$('#checkout-form').submit()")
+              = image_tag('https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png')
+            script.stripe-button(data-label="Pay with Credit Card" data-amount=@purchase_order.total_amount_cents data-currency="sgd" data-description=@purchase_order.description data-image=image_path('logo_square.png') data-key="pk_test_H6dQwcAqKHKyQ4cVoM5D7ubF" data-locale="auto" data-name="Code Craft SG" data-billing-address="true" src="https://checkout.stripe.com/checkout.js")
+            = image_tag 'cc_logos.png'
           - else
             input(type='image' src=image_url('bitcoin-buy-it-now-button.png'))
         - else

@@ -26,15 +26,31 @@ class OrdersController < ApplicationController
           OrdersMailer.payment_successful(@purchase_order).deliver_later
           return redirect_to attendees_order_path(@purchase_order.payment_token), flash: {success: "Order Received!"}
         elsif @purchase_order.currency_unit == 'SGD'
-          response = EXPRESS_GATEWAY.setup_purchase(@purchase_order.total_amount_cents,
-                                                    ip: request.remote_ip,
-                                                    return_url: success_order_url(@purchase_order.payment_token),
-                                                    cancel_return_url: cancel_order_url(@purchase_order.payment_token),
-                                                    currency: @purchase_order.currency_unit,
-                                                    allow_guest_checkout: true,
-                                                    items: [@purchase_order.build_payment_params]
-          )
-          return redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
+          if params[:stripeToken].present?
+            charge_details = {currency: @purchase_order.currency_unit,
+                              description: @purchase_order.description,
+                              statement_descriptor: @purchase_order.auto_invoice_no,
+                              receipt_email: stripe_params[:payer_email],
+                              metadata: { order_id: @purchase_order.auto_invoice_no, email: stripe_params[:payer_email] },
+                              order_id: @purchase_order.auto_invoice_no
+            }
+            response = STRIPE_GATEWAY.purchase(@purchase_order.total_amount_cents, params[:stripeToken], charge_details)
+            if response.success?
+              @purchase_order.update(stripe_params.merge(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no))
+              OrdersMailer.payment_successful(@purchase_order).deliver_later
+              return redirect_to attendees_order_path(@purchase_order.payment_token), flash: {success: "Order Received!"}
+            end
+          else
+            response = EXPRESS_GATEWAY.setup_purchase(@purchase_order.total_amount_cents,
+                                                      ip: request.remote_ip,
+                                                      return_url: success_order_url(@purchase_order.payment_token),
+                                                      cancel_return_url: cancel_order_url(@purchase_order.payment_token),
+                                                      currency: @purchase_order.currency_unit,
+                                                      allow_guest_checkout: true,
+                                                      items: [@purchase_order.build_payment_params]
+            )
+            return redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
+          end
         elsif @purchase_order.currency_unit == 'BTC'
           begin
             express_token = SecureRandom.hex(5)
@@ -134,5 +150,25 @@ class OrdersController < ApplicationController
 
   def set_purchase_order
     @purchase_order = PurchaseOrder.find_by(payment_token: params[:id])
+  end
+
+  def stripe_params
+    payer_info = params.permit(:stripeToken, :stripeEmail, :stripeBillingName, :stripeBillingAddressLine1, :stripeBillingAddressZip,
+                  :stripeBillingAddressState, :stripeBillingAddressCity, :stripeBillingAddressCountry
+                 )
+
+    { express_token: payer_info[:stripeToken],
+      notes: 'Stripe Payment',
+      payer_address: {
+          address1:payer_info[:stripeBillingAddressLine1],
+          postal_code:payer_info[:stripeBillingAddressZip],
+          state:payer_info[:stripeBillingAddressState],
+          city:payer_info[:stripeBillingAddressCity],
+          country:payer_info[:stripeBillingAddressCountry]
+        }.to_json,
+      payer_email: payer_info[:stripeEmail],
+      payer_first_name: payer_info[:stripeBillingName],
+      payer_country: payer_info[:stripeBillingAddressCountry]
+    }
   end
 end

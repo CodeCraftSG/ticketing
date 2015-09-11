@@ -51,5 +51,6 @@ Rails.application.configure do
       signature: ENV["PAYPAL_API_SIGNATURE"]
     }
     ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(paypal_options)
+    ::STRIPE_GATEWAY = ActiveMerchant::Billing::StripeGateway.new(login: ENV["STRIPE_SECRET_KEY"])
   end
 end

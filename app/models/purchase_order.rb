@@ -34,7 +34,7 @@ class PurchaseOrder < ActiveRecord::Base
   end
 
   def description
-    return '' if orders.count == 0
+    return '' if orders.empty? == 0
     if orders.count == 1
       order = orders.first
       "#{order.ticket_type.name} (#{order.quantity * order.ticket_type.entitlement} tickets)"
