@@ -28,7 +28,7 @@
             span Choose payment method:
             a(href="javascript:$('#checkout-form').submit()")
               = image_tag('https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png')
-            script.stripe-button(data-label="Pay with Credit Card" data-amount=@purchase_order.total_amount_cents data-currency="sgd" data-description=@purchase_order.description data-image=image_path('logo_square.png') data-key="pk_test_H6dQwcAqKHKyQ4cVoM5D7ubF" data-locale="auto" data-name="Code Craft SG" data-billing-address="true" src="https://checkout.stripe.com/checkout.js")
+            script.stripe-button(data-label="Pay with Credit Card" data-amount=@purchase_order.total_amount_cents data-currency="sgd" data-description=@purchase_order.description data-image=image_path('logo_square.png') data-key=ENV['STRIPE_PUBLISHABLE_KEY'] data-locale="auto" data-name="Code Craft SG" data-billing-address="true" src="https://checkout.stripe.com/checkout.js")
             = image_tag 'cc_logos.png'
           - else
             input(type='image' src=image_url('bitcoin-buy-it-now-button.png'))
