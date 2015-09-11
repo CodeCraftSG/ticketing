@@ -71,6 +71,27 @@ ActiveAdmin.register Event do
     f.actions
   end
 
+  member_action :attendance_list, method: :get do
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << %w(invoice date ticket first_name last_name email size)
+
+      resource.purchase_orders.success.order('invoice_no ASC').each do |po|
+        po.orders.each do |o|
+          o.attendees.each do |a|
+            csv << [po.invoice_no, po.created_at.strftime('%d-%b-%Y'), o.ticket_type.name, a.first_name, a.last_name, a.email, "#{a.cutting} #{a.size}"]
+          end
+        end
+      end
+    end
+    send_data csv_data, filename: "event-#{resource.id}-attendees-#{Date.today}.csv"
+  end
+
+  sidebar 'Downloads', only: :show do
+    div style: 'text-align: center' do
+      button_to 'Download Attendees', attendance_list_admin_event_path(event), method: :get, form_html: {target:'_blank'}
+    end
+  end
+
   show do
     tabs do
       tab 'Event' do
