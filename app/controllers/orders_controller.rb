@@ -31,6 +31,7 @@ class OrdersController < ApplicationController
                               description: @purchase_order.description,
                               statement_descriptor: @purchase_order.auto_invoice_no,
                               email: stripe_params[:payer_email],
+                              receipt_email: stripe_params[:payer_email],
                               order_id: @purchase_order.auto_invoice_no
             }
             response = STRIPE_GATEWAY.purchase(@purchase_order.total_amount_cents, params[:stripeToken], charge_details)
