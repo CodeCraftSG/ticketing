@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  before_filter :set_paper_trail_whodunnit
   before_filter :fetch_event
   before_filter :fetch_ticket_types
   helper_method :coupon_code
