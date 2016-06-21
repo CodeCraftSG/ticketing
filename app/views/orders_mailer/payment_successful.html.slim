@@ -3,6 +3,12 @@
     | Invoice:
     strong<= @purchase_order.invoice_no
 
+  h3 Payer Info:
+  ul.payer-info
+    li= "#{@purchase_order.payer_first_name} #{@purchase_order.payer_first_name}"
+    li= @purchase_order.payer_address
+    li= @purchase_order.payer_country
+
   = render 'shared/order_table'
 
   h3 Update Attendee Particulars

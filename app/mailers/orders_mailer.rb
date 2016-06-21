@@ -20,14 +20,8 @@ class OrdersMailer < ApplicationMailer
     @ticket = ticket
     @attendee = ticket.attendee
 
-    logo_path = File.join(Rails.root, 'app', 'assets', 'images', 'krgh_facade_day.png')
-    attachments.inline['krgh_facade_day.png'] = File.read(logo_path)
-
-    map_path = File.join(Rails.root, 'app', 'assets', 'images', 'nuss_krgh_map.jpg')
-    attachments.inline['nuss_krgh_map.jpg'] = File.read(map_path)
-
-    travel_instructions = File.join(Rails.root, 'app', 'assets', 'NUSS_Location_Map.pdf')
-    attachments['NUSS_Location_Map.pdf'] = File.read(map_path)
+    logo_path = File.join(Rails.root, 'app', 'assets', 'images', 'biopolis_matrix_bw.jpg')
+    attachments.inline['biopolis_matrix_bw.jpg'] = File.read(logo_path)
 
     mail(to: @ticket.attendee.email, bcc: 'orders@phpconf.asia', subject: "[#{@event.name}] Event Ticket (#{@ticket.order.ticket_type.name}) - #{@purchase_order.purchased_at.strftime('%e-%b-%Y')}")
   end
