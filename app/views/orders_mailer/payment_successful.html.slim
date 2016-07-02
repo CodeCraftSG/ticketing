@@ -7,7 +7,8 @@
   ul.payer-info
     li= "#{@purchase_order.payer_first_name} #{@purchase_order.payer_last_name}"
     - if @purchase_order.payer_address.present?
-      li= JSON.parse(@purchase_order.payer_address).values.compact.join('<br/>')
+      - JSON.parse(@purchase_order.payer_address).values.compact.each do |address_line|
+        li= address_line
       li= @purchase_order.payer_country
 
   = render 'shared/order_table'
