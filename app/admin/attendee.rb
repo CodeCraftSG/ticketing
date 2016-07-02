@@ -3,7 +3,7 @@ ActiveAdmin.register Attendee do
 
   config.batch_actions = false
 
-  actions :all, except: [:destroy]
+  actions :all
 
   filter :first_name
   filter :last_name
@@ -12,6 +12,7 @@ ActiveAdmin.register Attendee do
   filter :github
 
   index do
+    selectable_column
     column :first_name
     column :last_name
     column :email
