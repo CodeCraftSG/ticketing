@@ -1,7 +1,7 @@
 ActiveAdmin.register Attendee do
   menu priority: 6
 
-  config.batch_actions = false
+  # config.batch_actions = false
 
   actions :all
 
