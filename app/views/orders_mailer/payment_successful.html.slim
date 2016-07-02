@@ -6,8 +6,9 @@
   h3 Payer Info:
   ul.payer-info
     li= "#{@purchase_order.payer_first_name} #{@purchase_order.payer_last_name}"
-    li= @purchase_order.payer_address
-    li= @purchase_order.payer_country
+    - if @purchase_order.payer_address.present?
+      li= JSON.parse(@purchase_order.payer_address).values.compact.join('<br/>')
+      li= @purchase_order.payer_country
 
   = render 'shared/order_table'
 
