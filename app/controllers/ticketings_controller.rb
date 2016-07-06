@@ -3,7 +3,7 @@ class TicketingsController < ApplicationController
     @orders = {}
     @ticket_types.each do |t|
       qty = params[:ticket_type][t.id.to_s].try('[]', :qty) if params[:ticket_type]
-      qty = 1 if qty.nil? && t.standalone?
+      # qty = 1 if qty.nil? && t.standalone?
       qty = 0 unless qty.present?
 
       @orders[t.id] = qty
