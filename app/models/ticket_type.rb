@@ -17,7 +17,7 @@ class TicketType < ActiveRecord::Base
     if code
       coupon_code_ticket = active.with_code(code).first
       if coupon_code_ticket.present? && coupon_code_ticket.standalone?
-        available = with_code(code)
+        available = active.with_code(code)
       else
         available = available.
                       union(
