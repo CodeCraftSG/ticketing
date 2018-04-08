@@ -26,7 +26,9 @@
                   span.badge-notice< Complimentary
                 - if type.entitlement > 1
                   span.badge-alert<="Bulk pricing - #{type.entitlement} tickets"
-              p.description= simple_format(type.description) if type.description.present?
+              - if type.description.present?
+                .description
+                  = simple_format(type.description)
               p.date= "Availability: #{date_range(type.sale_starts_at, type.sale_ends_at)}"
             td.price
               => number_to_currency(type.price, unit: type.currency_unit + type.currency_symbol)
