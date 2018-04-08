@@ -8,7 +8,7 @@
   .cards
     .card
       .card-image
-        = image_tag attachments['biopolis_matrix_bw.jpg'].url
+        = image_tag attachments['krgh_facade_day.png'].url
       .card-header
         small> Name:
         br /
@@ -33,8 +33,10 @@
   p
     | You may update the above info at this URL:
     =< link_to attendee_url(@attendee.public_id), attendee_url(@attendee.public_id)
+
   h3 Ticketing
   p Please bring along this ticket and a photo ID (eg. your passport, driver's license or national identification card) on the day of the event to claim your event lanyard.
+
   h3 Getting to the venue
 
   h4 Tutorial Venue
@@ -42,27 +44,28 @@
     li
       strong Address:
     li
-      em Amazon Web Services, Singapore
-    li
-      em 23, Church Street, #10-01, Capital Square, Singapore 049481
+      em To be confirmed
+
+  br /
 
   h4 Conference Venue
   ul
     li
       strong Address:
     li
-      em Matrix (Biopolis), Singapore
+      em NUSS Kent Ridge Guild House
     li
-      em 30 Biopolis Street, Singapore 138671
+      em 9, Kent Ridge Drive, Singapore 119241
     li
-      strong Travel Directions
-    li Buona Vista is the nearest station to the venue
-    li Take Exit D at Buona Vista and walk 500m to Matrix (Biopolis)
+      a(href="https://2018.phpconf.asia/NUSS_Location_Map.pdf" target="_blank") Driving / public transport instructions
+
+  = image_tag attachments['nuss_krgh_map.jpg'].url
 
   h3 Accomodation in Singapore
   p
     | Check out hotels available at
     a<(href="http://conference.hotelscombined.com" target="_blank") HotelsCombined.com
+
   h3 Questions?
   p
     | If you have any questions about your ticket, do email us at

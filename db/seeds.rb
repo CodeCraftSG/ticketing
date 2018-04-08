@@ -4,6 +4,7 @@ event = Event.where(name: "PHPConf.Asia 2018").first_or_create do |e|
   e.daily_start_time = "9:00am"
   e.daily_end_time = "5:00pm"
   e.description = "<b>The Pan-Asian PHP Conference!</b>\r\nInternational & Regional Speakers • TDD Workshop + Tutorial + 2 Days Conference • Single Track\r\n26 to 29 September 2018\r\nSingapore"
+  e.contact_email = "orders@phpconf.asia"
   e.active = true
 end
 
