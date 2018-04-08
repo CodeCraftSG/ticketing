@@ -16,7 +16,7 @@ table.tables
               span.badge-notice Complimentary
             - if order.ticket_type.entitlement > 1
               span.badge-alert<="Bulk pricing - #{order.ticket_type.entitlement} tickets"
-          p.description= order.ticket_type.description if order.ticket_type.description.present?
+          p.description= simple_format(order.ticket_type.description) if order.ticket_type.description.present?
         td.price
           => number_to_currency(order.ticket_type.price, unit: order.ticket_type.currency_unit + order.ticket_type.currency_symbol)
           - if order.ticket_type.strikethrough_price.present?
