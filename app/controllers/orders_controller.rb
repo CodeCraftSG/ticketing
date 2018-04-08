@@ -36,7 +36,7 @@ class OrdersController < ApplicationController
             }
             response = STRIPE_GATEWAY.purchase(@purchase_order.total_amount_cents, params[:stripeToken], charge_details)
             if response.success?
-              @purchase_order.update(stripe_params.merge(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no))
+              @purchase_order.update(stripe_params.merge(status: 'success', purchased_at: Time.now, invoice_no: @purchase_order.auto_invoice_no, raw_payment_details: response.params.to_json))
               OrdersMailer.payment_successful(@purchase_order).deliver_later
               return redirect_to attendees_order_path(@purchase_order.payment_token), flash: {success: "Order Received!"}
             end

@@ -18,6 +18,7 @@
         - person = params.try(:[], :order).try(:[], order.id.to_s).try(:[], i.to_s) || {}
         fieldset.attendee
           h3= "#{order.ticket_type.name} - Ticket #{i}"
+          p= order.ticket_type.description
           .name
             .col
               label(for="order_#{order.id}_ticket_#{i}_first_name") First name*

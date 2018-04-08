@@ -60,7 +60,7 @@ class PurchaseOrder < ActiveRecord::Base
     update(
       express_payer_id: details.payer_id,
       express_token: token,
-      notes: details.note,
+      notes: "PayPal Express Payment: #{details.note}",
       payer_address: details.address.to_json,
       payer_email: details.email,
       payer_salutation: details.info['PayerName']['Salutation'],
@@ -82,7 +82,13 @@ class PurchaseOrder < ActiveRecord::Base
   end
 
   def transaction_id
-    JSON.parse(raw_payment_details)['TransactionId']
+    payment_details = JSON.parse(raw_payment_details)
+
+    if payment_details['TransactionId']
+      payment_details['TransactionId']
+    else
+      payment_details['balance_transaction']
+    end
   rescue
     nil
   end
