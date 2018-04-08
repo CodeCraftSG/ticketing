@@ -48,12 +48,12 @@ RSpec.describe PurchaseOrder, type: :model do
   end
 
   describe '#needs_payer_info_early?' do
-    let!(:order) { FactoryGirl.build(:order, ticket_type: ticket_type, quantity: 1).calculate_amount }
+    let!(:order) { FactoryBot.build(:order, ticket_type: ticket_type, quantity: 1).calculate_amount }
     let(:orders){ [ order ] }
-    let(:purchase_order) { FactoryGirl.build :purchase_order, orders: orders }
+    let(:purchase_order) { FactoryBot.build :purchase_order, orders: orders }
 
     context 'bitcoin' do
-      let(:ticket_type) { FactoryGirl.build :ticket_type, standalone: true, price: 1.0, currency_unit: 'BTC' }
+      let(:ticket_type) { FactoryBot.build :ticket_type, standalone: true, price: 1.0, currency_unit: 'BTC' }
 
       it 'returns true' do
         expect(purchase_order.needs_payment_info_early?).to be
@@ -61,7 +61,7 @@ RSpec.describe PurchaseOrder, type: :model do
     end
 
     context 'complimentary' do
-      let!(:ticket_type) { FactoryGirl.build :ticket_type, complimentary: true, price: 0.0 }
+      let!(:ticket_type) { FactoryBot.build :ticket_type, complimentary: true, price: 0.0 }
 
       it 'returns true' do
         expect(purchase_order.needs_payment_info_early?).to be
@@ -75,7 +75,7 @@ RSpec.describe PurchaseOrder, type: :model do
     end
 
     context 'no orders yet' do
-      subject{ FactoryGirl.build :purchase_order, orders: [] }
+      subject{ FactoryBot.build :purchase_order, orders: [] }
 
       it 'returns empty string if no orders found' do
         expect(subject.description).to eq ''
@@ -83,9 +83,9 @@ RSpec.describe PurchaseOrder, type: :model do
     end
 
     context 'has 1 order' do
-      let(:ticket_type) { FactoryGirl.create :ticket_type, name: 'Early Bird', price: 200.50, entitlement: 2 }
-      let(:order) { FactoryGirl.create :order, ticket_type: ticket_type, quantity: 2 }
-      subject{ FactoryGirl.create :purchase_order, orders: [order] }
+      let(:ticket_type) { FactoryBot.create :ticket_type, name: 'Early Bird', price: 200.50, entitlement: 2 }
+      let(:order) { FactoryBot.create :order, ticket_type: ticket_type, quantity: 2 }
+      subject{ FactoryBot.create :purchase_order, orders: [order] }
 
       it 'returns description for one order' do
         expect(subject.description).to eq "Early Bird (4 tickets)"
@@ -93,12 +93,12 @@ RSpec.describe PurchaseOrder, type: :model do
     end
 
     context 'has more than order' do
-      let(:early_bird) { FactoryGirl.create :ticket_type, name: 'Early Bird', price: 200.50, entitlement: 2 }
-      let(:student) { FactoryGirl.create :ticket_type, name: 'Student', price: 90, entitlement: 1 }
+      let(:early_bird) { FactoryBot.create :ticket_type, name: 'Early Bird', price: 200.50, entitlement: 2 }
+      let(:student) { FactoryBot.create :ticket_type, name: 'Student', price: 90, entitlement: 1 }
 
-      let(:order1) { FactoryGirl.create :order, ticket_type: early_bird, quantity: 2 }
-      let(:order2) { FactoryGirl.create :order, ticket_type: student, quantity: 1 }
-      subject{ FactoryGirl.create :purchase_order, orders: [order1, order2] }
+      let(:order1) { FactoryBot.create :order, ticket_type: early_bird, quantity: 2 }
+      let(:order2) { FactoryBot.create :order, ticket_type: student, quantity: 1 }
+      subject{ FactoryBot.create :purchase_order, orders: [order1, order2] }
 
       it 'returns description for one order' do
         expect(subject.description).to eq "Early Bird (4 tickets), Student (1 tickets)"
@@ -107,12 +107,12 @@ RSpec.describe PurchaseOrder, type: :model do
   end
 
   describe 'entitlements' do
-    let(:early_bird) { FactoryGirl.create :ticket_type, name: 'Early Bird', price: 200.50, entitlement: 2 }
-    let(:student) { FactoryGirl.create :ticket_type, name: 'Student', price: 90, entitlement: 1 }
+    let(:early_bird) { FactoryBot.create :ticket_type, name: 'Early Bird', price: 200.50, entitlement: 2 }
+    let(:student) { FactoryBot.create :ticket_type, name: 'Student', price: 90, entitlement: 1 }
 
-    let(:order1) { FactoryGirl.create :order, ticket_type: early_bird, quantity: 2 }
-    let(:order2) { FactoryGirl.create :order, ticket_type: student, quantity: 1 }
-    subject{ FactoryGirl.create :purchase_order, orders: [order1, order2] }
+    let(:order1) { FactoryBot.create :order, ticket_type: early_bird, quantity: 2 }
+    let(:order2) { FactoryBot.create :order, ticket_type: student, quantity: 1 }
+    subject{ FactoryBot.create :purchase_order, orders: [order1, order2] }
 
     it 'returns 5' do
       expect(subject.entitlements).to eq 5

@@ -12,7 +12,7 @@ RSpec.describe TicketType, type: :model do
     let(:active) { true }
     let(:hidden) { false }
     let(:code) { 'code1' }
-    let!(:valid) { FactoryGirl.create :ticket_type, active: active, hidden: hidden, code: code }
+    let!(:valid) { FactoryBot.create :ticket_type, active: active, hidden: hidden, code: code }
 
     shared_examples_for 'valid ticket_type' do |action|
       it "returns valid items for #{action}" do
@@ -24,7 +24,7 @@ RSpec.describe TicketType, type: :model do
       it_behaves_like 'valid ticket_type', :active
 
       it 'does not return active ticket_types' do
-        inactive = FactoryGirl.create :ticket_type, active:false
+        inactive = FactoryBot.create :ticket_type, active:false
 
         expect(TicketType.active).to_not include inactive
       end
@@ -34,7 +34,7 @@ RSpec.describe TicketType, type: :model do
       it_behaves_like 'valid ticket_type', :visible
 
       it 'does not return not visible ticket_types' do
-        not_visible = FactoryGirl.create :ticket_type, hidden:true
+        not_visible = FactoryBot.create :ticket_type, hidden:true
 
         expect(TicketType.visible).to_not include not_visible
       end
@@ -42,7 +42,7 @@ RSpec.describe TicketType, type: :model do
 
     describe '.with_code' do
       it 'returns ticket_types with correct code' do
-        not_visible = FactoryGirl.create :ticket_type, code: 'code2'
+        not_visible = FactoryBot.create :ticket_type, code: 'code2'
 
         expect(TicketType.with_code('code1')).to include valid
         expect(TicketType.with_code('code1')).to_not include not_visible
@@ -52,35 +52,35 @@ RSpec.describe TicketType, type: :model do
 
   describe '#available?' do
     let(:today) { Date.today.beginning_of_day }
-    let!(:available) { FactoryGirl.create :ticket_type, sale_starts_at: 1.day.ago, sale_ends_at: 5.days.from_now }
-    let!(:not_available) { FactoryGirl.create :ticket_type, sale_starts_at: 5.day.ago, sale_ends_at: 1.day.ago }
+    let!(:available) { FactoryBot.create :ticket_type, sale_starts_at: 1.day.ago, sale_ends_at: 5.days.from_now }
+    let!(:not_available) { FactoryBot.create :ticket_type, sale_starts_at: 5.day.ago, sale_ends_at: 1.day.ago }
 
     context 'sale started and not ending yet' do
       it 'returns true' do
-        ticket_type = FactoryGirl.build :ticket_type, sale_starts_at: 1.day.ago, sale_ends_at: 5.days.from_now
+        ticket_type = FactoryBot.build :ticket_type, sale_starts_at: 1.day.ago, sale_ends_at: 5.days.from_now
         expect(ticket_type.available?(today)).to be
       end
     end
 
     context 'sale started but ended' do
       it 'returns false' do
-        ticket_type = FactoryGirl.create :ticket_type, sale_starts_at: 5.day.ago, sale_ends_at: 1.day.ago
+        ticket_type = FactoryBot.create :ticket_type, sale_starts_at: 5.day.ago, sale_ends_at: 1.day.ago
         expect(ticket_type.available?(today)).to_not be
       end
     end
 
     context 'sale not started yet' do
       it 'returns false' do
-        ticket_type = FactoryGirl.build :ticket_type, sale_starts_at: 5.day.from_now, sale_ends_at: 10.days.from_now
+        ticket_type = FactoryBot.build :ticket_type, sale_starts_at: 5.day.from_now, sale_ends_at: 10.days.from_now
         expect(ticket_type.available?(today)).to_not be
       end
     end
   end
 
   describe '.tickets_available' do
-    let!(:active) { FactoryGirl.create :ticket_type, name: 'Active type', active:true, hidden:false, sequence:1 }
-    let!(:hidden_and_coded) { FactoryGirl.create :ticket_type, name: 'Hidden and coded', active:true, hidden:true, code:discount_code, sequence:0 }
-    let!(:inactive) { FactoryGirl.create :ticket_type, name: 'Inactive', active: false, hidden:false, sequence: 2 }
+    let!(:active) { FactoryBot.create :ticket_type, name: 'Active type', active:true, hidden:false, sequence:1 }
+    let!(:hidden_and_coded) { FactoryBot.create :ticket_type, name: 'Hidden and coded', active:true, hidden:true, code:discount_code, sequence:0 }
+    let!(:inactive) { FactoryBot.create :ticket_type, name: 'Inactive', active: false, hidden:false, sequence: 2 }
 
     let(:discount_code) { nil }
     let(:do_action) { TicketType.tickets_available(code: discount_code) }
@@ -113,7 +113,7 @@ RSpec.describe TicketType, type: :model do
 
     context 'standalone ticket' do
       let(:sponsor_code) { 'sponsor' }
-      let!(:standalone) { FactoryGirl.create :ticket_type, name: 'Sponsor ticket', code:sponsor_code, active: true, hidden: true, standalone: true, sequence: 2 }
+      let!(:standalone) { FactoryBot.create :ticket_type, name: 'Sponsor ticket', code:sponsor_code, active: true, hidden: true, standalone: true, sequence: 2 }
       let(:do_action) { TicketType.tickets_available(code: sponsor_code) }
 
       it 'returns only standalone ticket' do

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :event do
     name Faker::Lorem.sentence
     start_date Faker::Date.forward(100)

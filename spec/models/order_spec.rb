@@ -14,7 +14,7 @@ RSpec.describe Order, type: :model do
 
   describe '#total_amount' do
     it 'returns total_amount_cents in 2 decimal currency value' do
-      order = FactoryGirl.build :order, total_amount_cents: 19999
+      order = FactoryBot.build :order, total_amount_cents: 19999
 
       expect(order.total_amount).to eq 199.99
     end
@@ -22,8 +22,8 @@ RSpec.describe Order, type: :model do
 
   describe '#calculate_amount' do
     it 'returns total_amount_cents in 2 decimal currency value' do
-      ticket_type = FactoryGirl.build :ticket_type, price: 200.50
-      order = FactoryGirl.build :order, quantity: 2, ticket_type: ticket_type
+      ticket_type = FactoryBot.build :ticket_type, price: 200.50
+      order = FactoryBot.build :order, quantity: 2, ticket_type: ticket_type
 
       order.calculate_amount
       expect(order.total_amount_cents).to eq 40100
@@ -31,8 +31,8 @@ RSpec.describe Order, type: :model do
   end
 
   describe '#ticket_entitlement' do
-    let(:bulk_type) { FactoryGirl.build :ticket_type, entitlement: 3 }
-    let(:order) { FactoryGirl.build :order, quantity: 2, ticket_type: bulk_type }
+    let(:bulk_type) { FactoryBot.build :ticket_type, entitlement: 3 }
+    let(:order) { FactoryBot.build :order, quantity: 2, ticket_type: bulk_type }
 
     it 'returns number of tickets entitled' do
       expect(order.ticket_entitlement).to eq 6
@@ -41,7 +41,7 @@ RSpec.describe Order, type: :model do
 
   describe '#send_attendee_notifications' do
     xit 'calls OrderMailer' do
-      order = FactoryGirl.build :order
+      order = FactoryBot.build :order
 
     end
   end
