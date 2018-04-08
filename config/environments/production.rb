@@ -87,7 +87,7 @@ Rails.application.configure do
     :domain         => 'heroku.com',
     :enable_starttls_auto => true
   }
-  config.action_mailer.default_url_options = { host: 'phpconfasia2016.codecraft.com.sg' }
+  config.action_mailer.default_url_options = { host: 'phpconfasia2018.codecraft.com.sg' }
 
   config.after_initialize do
     ActiveMerchant::Billing::Base.mode = ENV["PAYPAL_API_MODE"].to_sym
