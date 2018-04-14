@@ -35,6 +35,7 @@ gem 'carrierwave-dropbox', '~> 2.0.0.rc1'
 gem 'blockchain'
 gem 'country_select'
 gem 'active_admin-sortable_tree'
+gem 'sidekiq'
 
 gem 'web-console', group: :development
 

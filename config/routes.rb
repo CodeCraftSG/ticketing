@@ -27,4 +27,9 @@ Rails.application.routes.draw do
     end
   end
   resources :attendees, only: [:show, :update]
+
+  require 'sidekiq/web'
+  authenticate :admin_user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end
