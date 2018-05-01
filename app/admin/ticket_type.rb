@@ -6,6 +6,22 @@ ActiveAdmin.register TicketType do
   config.sort_order = 'sequence_asc'
   sortable tree: false, sorting_attribute: :sequence
 
+  batch_action :activate, confirm: "Are you sure?" do |ids|
+    batch_action_collection.find(ids).each do |ticket_type|
+      ticket_type.update(active: true)
+    end
+
+    redirect_to collection_path, alert: "Activated ticket types."
+  end
+
+  batch_action :deactivate, confirm: "Are you sure?" do |ids|
+    batch_action_collection.find(ids).each do |ticket_type|
+      ticket_type.update(active: false)
+    end
+
+    redirect_to collection_path, alert: "Deactivated ticket types."
+  end
+
   index do
     selectable_column
     column :event
