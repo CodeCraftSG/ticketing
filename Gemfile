@@ -17,7 +17,7 @@ gem 'slim-rails'
 gem 'puma'
 
 gem 'dotenv-rails', require: 'dotenv/rails-now'
-gem 'activeadmin', '~> 1.0.0.pre1'
+gem 'activeadmin', '~> 1.1.0'
 gem 'devise', '~>3.2'
 gem 'active_record_union'
 gem 'time_will_tell'
