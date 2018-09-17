@@ -138,6 +138,7 @@ ActiveAdmin.register TicketType do
             column('Size') { |t| "#{t.cutting} #{t.size}" }
             column('Twitter') { |t| t.twitter }
             column('Github') { |t| t.github }
+            column('Status') { |t| t.order.purchase_order.status }
           end
         end
       end
