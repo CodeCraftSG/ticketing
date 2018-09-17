@@ -20,7 +20,23 @@ ActiveAdmin.register Attendee do
     column :size
     column :twitter
     column :github
+    column 'Ticket' do |r|
+      r.tickets&.first&.order&.ticket_type&.name
+    end
     actions
+  end
+
+  csv do
+    column :first_name
+    column :last_name
+    column :email
+    column :cutting
+    column :size
+    column :twitter
+    column :github
+    column 'Ticket' do |r|
+      r.tickets&.first&.order&.ticket_type&.name
+    end
   end
 
   permit_params :first_name, :last_name, :email, :twitter, :size, :github
