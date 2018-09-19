@@ -23,6 +23,9 @@ ActiveAdmin.register Attendee do
     column 'Ticket' do |r|
       r.tickets&.first&.order&.ticket_type&.name
     end
+    column 'Invoice No.' do |r|
+      r.tickets&.first&.order&.purchase_order&.invoice_no
+    end
     column 'Status' do |r|
       status_txt = case r.tickets&.first&.order&.purchase_order&.status
                      when 'success'
@@ -47,6 +50,9 @@ ActiveAdmin.register Attendee do
     column :github
     column 'Ticket' do |r|
       r.tickets&.first&.order&.ticket_type&.name
+    end
+    column 'Invoice No.' do |r|
+      r.tickets&.first&.order&.purchase_order&.invoice_no
     end
     column 'Status' do |r|
       r.tickets&.first&.order&.purchase_order&.status
