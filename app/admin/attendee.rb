@@ -18,6 +18,7 @@ ActiveAdmin.register Attendee do
     column :email
     column :cutting
     column :size
+    column :dietary_pref
     column :twitter
     column :github
     column 'Ticket' do |r|
@@ -46,6 +47,7 @@ ActiveAdmin.register Attendee do
     column :email
     column :cutting
     column :size
+    column :dietary_pref
     column :twitter
     column :github
     column 'Ticket' do |r|
@@ -69,6 +71,7 @@ ActiveAdmin.register Attendee do
       f.input :twitter
       f.input :cutting, as: :select, collection: ['Men size', 'Ladies size']
       f.input :size, as: :select, collection: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+      f.input :dietary_pref
       f.input :github
     end
     f.actions
@@ -81,6 +84,7 @@ ActiveAdmin.register Attendee do
       row :email
       row :cutting
       row :size
+      row :dietary_pref
       row :twitter
       row :github
     end

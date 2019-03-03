@@ -3,7 +3,7 @@ class Attendee < ActiveRecord::Base
 
   before_create :auto_public_id
 
-  validates_presence_of [:first_name, :last_name, :email, :size, :cutting]
+  validates_presence_of [:first_name, :last_name, :email]
   validates_email_format_of :email
 
   has_many :tickets

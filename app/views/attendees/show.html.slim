@@ -21,26 +21,8 @@
           label(for="email") Email*
           input(type="text" id="email" name="attendee[email]" value="#{@attendee[:email]}")
         .col
-          label(for="cutting") T-shirt size
-          .button-group
-            - ["Men size","Ladies size"].each do |cutting|
-              label
-                input(type="radio" name="attendee[cutting]" value="#{cutting}" checked=(cutting == @attendee[:cutting])  )
-                span.button-group-item= cutting
-          small
-            | &nbsp;[
-            a<>(href="#tshirt-size") size chart
-            | ]
-      .contact_others
-        .col
-          | &nbsp;
-        .col
-          .button-group
-            - ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'].each do |size|
-              label
-                input(type="radio" name="attendee[size]" value="#{size}" checked=(size == @attendee[:size])  )
-                span.button-group-item= size
-
+          label(for="dietary_pref") Dietary Preference*
+          input(type="text" id="dietary_pref" name="attendee[dietary_pref]" value="#{@attendee[:dietary_pref]}")
       .contact_others
         .col
           label(for="twitter") Twitter
@@ -52,52 +34,3 @@
     .actions
       .order
         input.buy-now(type='submit' name='finalize' value='Save Attendee Particulars')
-
-    hr
-
-    fieldset#tshirt-size
-      h2 T-shirt Size Chart
-      p We are please to offer 2 different size ranges for men and women. Please have a look at the different size dimensions below before you decide on the right size.
-
-      table
-        thead
-          tr
-            th(colspan="2") Men size
-            th(colspan="2") Ladies size
-        tbody
-          tr
-            td XS
-            td 44cm x 64cm
-            td
-            td
-          tr
-            td S
-            td 47cm x 67cm
-            td S
-            td 40.5cm x 58.5cm
-          tr
-            td M
-            td 46cm x 68cm
-            td M
-            td 43cm x 61cm
-          tr
-            td L
-            td 49cm x 70cm
-            td L
-            td 46cm x 54.1cm
-          tr
-            td XL
-            td 51cm x 72cm
-            td XL
-            td 49cm x 66cm
-          tr
-            td XXL
-            td 53cm x 74cm
-            td
-            td
-          tr
-            td XXXL
-            td 56cm x 70cm
-            td
-            td
-

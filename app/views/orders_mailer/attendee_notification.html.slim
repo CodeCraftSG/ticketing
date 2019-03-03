@@ -20,6 +20,9 @@
             strong> T-shirt size:
             => @attendee.cutting
             => @attendee.size
+          - if @attendee.dietary_pref.present?
+            strong> Dietary Preference:
+            => @attendee.dietary_pref
           - if @attendee.twitter.present?
             | /
             strong<> Twitter
