@@ -31,25 +31,8 @@
               label(for="order_#{order.id}_ticket_#{i}_email") Email*
               input(type="text" id="order_#{order.id}_ticket_#{i}_email" name="order[#{order.id}][#{i}][email]" value="#{person[:email]}")
             .col
-              label(for="order_#{order.id}_ticket_#{i}_cutting") T-shirt size
-              .button-group
-                - ["Men size","Ladies size"].each do |cutting|
-                  label
-                    input(type="radio" name="order[#{order.id}][#{i}][cutting]" value="#{cutting}" checked=(cutting == person[:cutting])  )
-                    span.button-group-item= cutting
-              small
-                | &nbsp;[
-                a<>(href="#tshirt-size") size chart
-                | ]
-          .contact_others
-            .col
-              | &nbsp;
-            .col
-              .button-group
-                - ['XS', 'S', 'M', 'L', 'XL', 'XXL'].each do |size|
-                  label
-                    input(type="radio" name="order[#{order.id}][#{i}][size]" value="#{size}" checked=(size == person[:size])  )
-                    span.button-group-item= size
+              label(for="order_#{order.id}_ticket_#{i}_dietary_pref") Dietary Preference
+              input(type="text" id="order_#{order.id}_ticket_#{i}_dietary_pref" name="order[#{order.id}][#{i}][dietary_pref]" value="#{person[:dietary_pref]}")
 
           .contact_others
             .col

@@ -119,7 +119,8 @@ class OrdersController < ApplicationController
                 twitter: person[:twitter].gsub(/[@]/,''),
                 github: person[:github],
                 cutting: person[:cutting],
-                size: person[:size]
+                size: person[:size],
+                dietary_pref: person[:dietary_pref]
             )
             ticket = Ticket.new(attendee: attendee)
             ticket.document = person[:document] if order.ticket_type.needs_document? && person[:document].present?
